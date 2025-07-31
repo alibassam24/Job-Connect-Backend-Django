@@ -1,0 +1,63 @@
+.env 
+venv
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+
+# Django specific
+*.log
+*.pot
+*.pyc
+*.mo
+*.db
+*.sqlite3
+*.sqlite3-journal
+
+# Env files
+.env
+.env.*
+
+# Virtual Environments
+env/
+venv/
+ENV/
+.venv/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# PyCharm
+.idea/
+
+# Migrations (optional – uncomment if you don’t want to track them initially)
+# **/migrations/
+# !**/migrations/__init__.py
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.nox/
+.cache
+coverage.xml
+nosetests.xml
+*.cover
+
+# mypy
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+# Sentry CLI
+.sentryclirc
+
+# Static/media (optional if using cloud storage)
+staticfiles/
+media/
