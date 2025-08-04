@@ -3,7 +3,8 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework import status
 from serializers import *
-
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.models import Token
 
 # Create your views here.
 @api_view[("POST")]
@@ -12,7 +13,6 @@ def register_user(request):
     password=request.data["password"]
     
     serializer=UserSerializer(data=request.data)
-    
     if serializer.is_valid():
         serializer.set_password(password)
         serializer.save()
