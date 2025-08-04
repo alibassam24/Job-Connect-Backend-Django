@@ -26,6 +26,7 @@ def register_user(request):
         user.set_password(password)
         user.save()
         Token.objects.create(user=user)
+        
         return Response(
             {
                 "status": "success",
