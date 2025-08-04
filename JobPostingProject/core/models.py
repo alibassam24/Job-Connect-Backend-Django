@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 # Create your models here.
 
@@ -11,13 +11,12 @@ class User(AbstractUser):
         ("Employee", "Employee"),
         ("Employer", "Employer"),
     ]
-    first_name=models.CharField(max_length=50)
-    last_name=models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     role = models.CharField(choices=ROLE_CHOICES)
-    username=models.CharField(max_length=100, unique=True)
+    username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True)
     title = models.CharField(
-        
         max_length=150,
         blank=True,
     )
@@ -25,11 +24,11 @@ class User(AbstractUser):
 
 # Best Practice to create seperate profiles for different types of users
 class EmployeeProfile(models.Model):
-    company = models.CharField(max_length=100, blank=True,)
-
-    
+    company = models.CharField(
+        max_length=100,
+        blank=True,
+    )
 
 
 class EmployerProfile(models.Model):
     file = models.FileField()
-   
