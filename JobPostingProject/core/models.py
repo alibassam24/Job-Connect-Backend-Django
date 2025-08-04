@@ -7,17 +7,23 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     # default id
     # default password
-    ROLES_CHOICES = {"Employee", "Employer"}
-    role = models.CharField(role=ROLES_CHOICES)
+    ROLE_CHOICES = [
+        ("Employee", "Employee"),
+        ("Employer", "Employer"),
+    ]
+    first_name=models.CharField(max_length=50)
+    last_name=models.CharField(max_length=50)
+    role = models.CharField(choices=ROLE_CHOICES)
     email = models.EmailField(unique=True)
     title = models.CharField(
+        
         max_length=150,
         blank=True,
     )
 
 
 # Best Practice to create seperate profiles for different types of users
-class EmployeeProfile:
+class EmployeeProfile(models.Model):
     company = models.CharField(max_length=100, blank=True,)
 
     
