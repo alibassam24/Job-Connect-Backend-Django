@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import *
 from rest_framework.validators import ValidationError
 
+
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -15,7 +16,14 @@ class UserSerializer(serializers.ModelSerializer):
     def validate(self, data):
         email=data["email"]
 
-        if User.objects.filter(email).exists():
+        if User.objects.filter(email=email).exists():
             raise serializers.ValidationError("Email already exits")
 
+
+        username=data["username"]
+
+        if User.objects.filter(username=username).exists():
+            raise serializers.ValidationError("username already exists")
+
         return data
+    
