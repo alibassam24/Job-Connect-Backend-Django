@@ -7,6 +7,7 @@ from rest_framework.decorators import (
     authentication_classes,
     permission_classes,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .serializers import *
@@ -62,3 +63,20 @@ def login_user(request):
             {"status": "failed", "message": "Invalid data"},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+@api_view(["DELETE"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def delete_user(request,id):
+    if not id:
+        return Response({"status":"failed","message":"id not found"})
+    else:     
+        try:
+            user=User.objects.get(id=id)
+            if request.user.id==user.id:
+                user.delete()
+                return Response({"status":"success","message":"user deleted successfully"},status=status.HTTP_200_OK,)
+            else: 
+                return Response({"status":"failed","message":"not allowed"},status=status.HTTP_403_FORBIDDEN,)
+        except:
+            return Response({"status":"failed","message":"User not found"},status=status.HTTP_400_BAD_REQUEST,)
