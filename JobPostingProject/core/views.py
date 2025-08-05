@@ -27,7 +27,7 @@ def register_user(request):
         user.set_password(password)
         user.save()
         Token.objects.create(user=user)
-        
+
         return Response(
             {
                 "status": "success",
@@ -64,19 +64,29 @@ def login_user(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+
 @api_view(["DELETE"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def delete_user(request,id):
+def delete_user(request, id):
     if not id:
-        return Response({"status":"failed","message":"id not found"})
-    else:     
+        return Response({"status": "failed", "message": "id not found"})
+    else:
         try:
-            user=User.objects.get(id=id)
-            if request.user.id==user.id:
+            user = User.objects.get(id=id)
+            if request.user.id == user.id:
                 user.delete()
-                return Response({"status":"success","message":"user deleted successfully"},status=status.HTTP_200_OK,)
-            else: 
-                return Response({"status":"failed","message":"not allowed"},status=status.HTTP_403_FORBIDDEN,)
-        except:
-            return Response({"status":"failed","message":"User not found"},status=status.HTTP_400_BAD_REQUEST,)
+                return Response(
+                    {"status": "success", "message": "user deleted successfully"},
+                    status=status.HTTP_200_OK,
+                )
+            else:
+                return Response(
+                    {"status": "failed", "message": "not allowed"},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+        except User.DoesNotExist:
+            return Response(
+                {"status": "failed", "message": "User not found","id":user.id},
+                status=status.HTTP_400_BAD_REQUEST,
+            )

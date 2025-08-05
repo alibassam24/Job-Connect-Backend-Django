@@ -28,7 +28,9 @@ class EmployeeProfile(models.Model):
         max_length=100,
         blank=True,
     )
+    employee_id=models.ForeignKey(User, to_field="id",on_delete=models.CASCADE)
 
 
 class EmployerProfile(models.Model):
     file = models.FileField()
+    employer_id=models.ForeignKey(User, to_field="id",on_delete=models.CASCADE)

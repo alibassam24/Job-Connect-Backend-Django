@@ -21,11 +21,3 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("username already exists")
 
         return data
-
-
-""" email=data["email"]
-
-        if User.objects.filter(email=email).exists():
-            raise serializers.ValidationError("Email already exits")
-
-          """
