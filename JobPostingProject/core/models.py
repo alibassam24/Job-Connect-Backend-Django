@@ -13,7 +13,7 @@ class User(AbstractUser):
     ]
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    role = models.CharField(choices=ROLE_CHOICES)
+    role = models.CharField(max_length=20,choices=ROLE_CHOICES)
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True)
     title = models.CharField(
@@ -28,9 +28,9 @@ class EmployeeProfile(models.Model):
         max_length=100,
         blank=True,
     )
-    employee_id=models.ForeignKey(User, to_field="id",on_delete=models.CASCADE)
+    employee_id=models.OneToOneField(User, to_field="id",on_delete=models.CASCADE)
 
 
 class EmployerProfile(models.Model):
     file = models.FileField()
-    employer_id=models.ForeignKey(User, to_field="id",on_delete=models.CASCADE)
+    employer_id=models.OneToOneField(User, to_field="id",on_delete=models.CASCADE)
