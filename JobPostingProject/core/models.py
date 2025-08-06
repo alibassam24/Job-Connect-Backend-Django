@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class User(AbstractUser):
     # default id
     # default password
@@ -20,26 +21,29 @@ class User(AbstractUser):
         blank=True,
     )
 
+
 # Best Practice to create seperate profiles for different types of users
 class EmployeeProfile(models.Model):
     file = models.FileField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    city=models.CharField(max_length=20)
+    city = models.CharField(max_length=20)
     phone_number = models.CharField(max_length=11)
-    introduction=models.CharField(max_length=1000,blank=True,null=True)
+    introduction = models.CharField(max_length=1000, blank=True, null=True)
 
 
 class Skills(models.Model):
-    name=models.CharField(max_length=15)
-    employee=models.ManyToManyField(EmployeeProfile)
+    name = models.CharField(max_length=15)
+    employee = models.ManyToManyField(EmployeeProfile)
+
 
 class Experience(models.Model):
-    company=models.CharField(max_length=50)
-    duration=models.CharField(max_length=20,blank=True,null=True)
-    start_date=models.DateField()
-    end_date=models.DateField(blank=True,null=True)
-    description=models.CharField(max_length=500)
-    employee=models.ForeignKey(EmployeeProfile,on_delete=models.CASCADE)
+    company = models.CharField(max_length=50)
+    duration = models.CharField(max_length=20, blank=True, null=True)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
+    description = models.CharField(max_length=500)
+    employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
+
 
 class EmployerProfile(models.Model):
     company = models.CharField(
@@ -47,7 +51,8 @@ class EmployerProfile(models.Model):
         blank=True,
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    city=models.CharField(max_length=20)
+    city = models.CharField(max_length=20)
+
 
 class Job(models.Model):
     EXP_CHOICES = [
@@ -75,11 +80,12 @@ class Job(models.Model):
         max_length=8, choices=WORKPLACE_CHOICES, default="onsite"
     )
 
+
 class Application(models.Model):
-    employee=models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
-    employer=models.OneToOneField(EmployerProfile,on_delete=models.CASCADE)
-    job=models.OneToOneField(Job,on_delete=models.CASCADE)
-    cover_letter=models.CharField(max_length=200)
-    cv=models.FileField()
-    email=models.EmailField()
-    city=models.CharField(max_length=20)
+    employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
+    employer = models.OneToOneField(EmployerProfile, on_delete=models.CASCADE)
+    job = models.OneToOneField(Job, on_delete=models.CASCADE)
+    cover_letter = models.CharField(max_length=200)
+    cv = models.FileField()
+    email = models.EmailField()
+    city = models.CharField(max_length=20)
