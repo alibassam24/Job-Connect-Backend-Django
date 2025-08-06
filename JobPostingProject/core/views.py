@@ -46,7 +46,7 @@ def register_user(request):
         )
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def login_user(request):
 
     username = request.data["username"]
@@ -56,7 +56,7 @@ def login_user(request):
     user = authenticate(username=username, password=password)
 
     if user:
-        token, _ = Token.objects.get_or_create()
+        token, _ = Token.objects.get_or_create(user=user)
         return Response(
             {"status": "success", "message": "login successful", "Token": token.key},
             status=status.HTTP_200_OK,
@@ -90,7 +90,7 @@ def delete_user(request, id):
                 )
         except User.DoesNotExist:
             return Response(
-                {"status": "failed", "message": "User not found", "id": user.id},
+                {"status": "failed", "message": "User not found"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -143,6 +143,10 @@ def get_experience_by_id(request,id):
 def remove_experience(request):
     pass
 
+@api_view(["POST"])
+def edit_experience(request, experience_id):
+    pass
+
 #-------------------------------Job-----------------------------------------
 
 @api_view(["POST"])
@@ -150,14 +154,23 @@ def post_job(request):
     pass
 
 @api_view(["PATCH"])
-def update_job(request):
+def edit_job(request):
     pass
 
+@api_view(["GET"])
+def search_job(request):
+    pass
+
+@api_view(["GET"])
+def view_job(request):
+    pass
 
 @api_view(["DELETE"])
 def delete_job(request):
     pass
 
+##filter jobs based on diff fields
+##add pagination
 
 #-------------------------------Application-----------------------------------------
 
