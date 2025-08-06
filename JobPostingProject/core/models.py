@@ -80,3 +80,8 @@ class Application(models.Model):
     employee=models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
     employer=models.OneToOneField(EmployerProfile)
     job=models.OneToOneField(Job)
+    cover_letter=models.CharField(max_length=200)
+    cv=models.FileField()
+    email=models.EmailField()
+    city=models.CharField(max_length=20)
+    
