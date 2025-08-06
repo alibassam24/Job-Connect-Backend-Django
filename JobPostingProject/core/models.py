@@ -13,7 +13,7 @@ class User(AbstractUser):
     ]
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    role = models.CharField(max_length=20,choices=ROLE_CHOICES)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True)
     title = models.CharField(
@@ -24,13 +24,44 @@ class User(AbstractUser):
 
 # Best Practice to create seperate profiles for different types of users
 class EmployeeProfile(models.Model):
+    file = models.FileField()
+    user = models.OneToOneField(User, to_field="id", on_delete=models.CASCADE)
+    city=models.CharField(max_length=20)
+   # phone_number(models.)
+
+class EmployerProfile(models.Model):
     company = models.CharField(
         max_length=100,
         blank=True,
     )
-    employee_id=models.OneToOneField(User, to_field="id",on_delete=models.CASCADE)
+    user = models.OneToOneField(User, to_field="id", on_delete=models.CASCADE)
+    city=models.CharField(max_length=20)
 
+class Job(models.Model):
 
-class EmployerProfile(models.Model):
-    file = models.FileField()
-    employer_id=models.OneToOneField(User, to_field="id",on_delete=models.CASCADE)
+    EXP_CHOICES = [
+        ("Internship", "Internship"),
+        ("Senior", "Senior"),
+        ("Mid-Senior", "Mid-Senior"),
+        ("Junior", "Junior"),
+        ("Entry", "Entry"),
+        ("Executive", "Executive"),
+    ]
+
+    WORKPLACE_CHOICES = [
+        ("Remote", "Remote"),
+        ("Onsite", "Onsite"),
+        ("Hybird", "Hybrid"),
+    ]
+
+    title = models.CharField(max_length=50)
+    description = models.CharField(max_length=2000)
+    skills = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    location = models.CharField(max_length=50)
+    experience_level = models.CharField(
+        max_length=12, choices=EXP_CHOICES, default="entry"
+    )
+    workplace = models.CharField(
+        max_length=8, choices=WORKPLACE_CHOICES, default="onsite"
+    )

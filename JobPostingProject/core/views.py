@@ -48,6 +48,7 @@ def register_user(request):
 def login_user(request):
 
     username = request.data["username"]
+    # username = request.data.get("username", "")
     password = request.data["password"]
 
     user = authenticate(username=username, password=password)
@@ -70,7 +71,7 @@ def login_user(request):
 @permission_classes([IsAuthenticated])
 def delete_user(request, id):
     if not id:
-        return Response({"status": "failed", "message": "id not found"})
+        return Response({"status": "failed", "message": "user not found"})
     else:
         try:
             user = User.objects.get(id=id)
@@ -87,6 +88,6 @@ def delete_user(request, id):
                 )
         except User.DoesNotExist:
             return Response(
-                {"status": "failed", "message": "User not found","id":user.id},
+                {"status": "failed", "message": "User not found", "id": user.id},
                 status=status.HTTP_400_BAD_REQUEST,
             )
