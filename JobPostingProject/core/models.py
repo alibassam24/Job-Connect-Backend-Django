@@ -21,9 +21,6 @@ class User(AbstractUser):
         blank=True,
     )
 
-
-class Skills(models.Model):
-    name=models.CharField(max_length=15)
 # Best Practice to create seperate profiles for different types of users
 class EmployeeProfile(models.Model):
     file = models.FileField()
@@ -31,8 +28,11 @@ class EmployeeProfile(models.Model):
     city=models.CharField(max_length=20)
     phone_number = models.CharField(max_length=11)
     introduction=models.CharField(max_length=1000,blank=True,null=True)
-    skill=models.ManyToManyField(Skills)
 
+
+class Skills(models.Model):
+    name=models.CharField(max_length=15)
+    employee=models.ManyToManyField(EmployeeProfile)
 
 class Experience(models.Model):
     company=models.CharField(max_length=50)
@@ -40,10 +40,7 @@ class Experience(models.Model):
     start_date=models.DateField()
     end_date=models.DateField(blank=True,null=True)
     description=models.CharField(max_length=500)
-    employee=models.ForeignKey(EmployeeProfile)
-    
-
-
+    employee=models.ForeignKey(EmployeeProfile,to_field=id,on_delete=models.CASCADE)
 
 class EmployerProfile(models.Model):
     company = models.CharField(
@@ -54,7 +51,6 @@ class EmployerProfile(models.Model):
     city=models.CharField(max_length=20)
 
 class Job(models.Model):
-
     EXP_CHOICES = [
         ("Internship", "Internship"),
         ("Senior", "Senior"),
@@ -63,13 +59,11 @@ class Job(models.Model):
         ("Entry", "Entry"),
         ("Executive", "Executive"),
     ]
-
     WORKPLACE_CHOICES = [
         ("Remote", "Remote"),
         ("Onsite", "Onsite"),
         ("Hybird", "Hybrid"),
     ]
-
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=2000)
     skills = models.CharField(max_length=100, blank=True, null=True)
