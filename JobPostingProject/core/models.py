@@ -21,13 +21,20 @@ class User(AbstractUser):
         blank=True,
     )
 
+class Experience(models.Model):
+    company=models.CharField(max_length=50)
+    duration=models.IntegerField() #IN MONTHS -> 1,2,3,4.....
+    start_date=models.DateField()
+    end_date=models.DateField()
 
 # Best Practice to create seperate profiles for different types of users
 class EmployeeProfile(models.Model):
     file = models.FileField()
     user = models.OneToOneField(User, to_field="id", on_delete=models.CASCADE)
     city=models.CharField(max_length=20)
-   # phone_number(models.)
+    phone_number=models.IntegerField(max_length=11)
+    introduction=models.CharField(max_length=1000,blank=True,null=True)
+    experience=models.ForeignKey(Experience,to_field=id)
 
 class EmployerProfile(models.Model):
     company = models.CharField(
