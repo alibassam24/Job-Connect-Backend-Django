@@ -24,7 +24,7 @@ class User(AbstractUser):
 # Best Practice to create seperate profiles for different types of users
 class EmployeeProfile(models.Model):
     file = models.FileField()
-    user = models.OneToOneField(User, to_field="id", on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     city=models.CharField(max_length=20)
     phone_number = models.CharField(max_length=11)
     introduction=models.CharField(max_length=1000,blank=True,null=True)
@@ -40,14 +40,14 @@ class Experience(models.Model):
     start_date=models.DateField()
     end_date=models.DateField(blank=True,null=True)
     description=models.CharField(max_length=500)
-    employee=models.ForeignKey(EmployeeProfile,to_field=id,on_delete=models.CASCADE)
+    employee=models.ForeignKey(EmployeeProfile,on_delete=models.CASCADE)
 
 class EmployerProfile(models.Model):
     company = models.CharField(
         max_length=100,
         blank=True,
     )
-    user = models.OneToOneField(User, to_field="id", on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     city=models.CharField(max_length=20)
 
 class Job(models.Model):
@@ -78,10 +78,9 @@ class Job(models.Model):
 
 class Application(models.Model):
     employee=models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
-    employer=models.OneToOneField(EmployerProfile)
-    job=models.OneToOneField(Job)
+    employer=models.OneToOneField(EmployerProfile,on_delete=models.CASCADE)
+    job=models.OneToOneField(Job,on_delete=models.CASCADE)
     cover_letter=models.CharField(max_length=200)
     cv=models.FileField()
     email=models.EmailField()
     city=models.CharField(max_length=20)
-    

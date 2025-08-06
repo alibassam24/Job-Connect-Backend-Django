@@ -37,8 +37,8 @@ ENV/
 .idea/
 
 # Migrations (optional – uncomment if you don’t want to track them initially)
-# **/migrations/
-# !**/migrations/__init__.py
+**/migrations/
+!**/migrations/__init__.py
 
 # Coverage reports
 htmlcov/
