@@ -7,6 +7,7 @@ from rest_framework.decorators import (
     authentication_classes,
     permission_classes,
 )
+
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -14,6 +15,7 @@ from .serializers import *
 
 # Create your views here.
 
+#-------------------------------USER-----------------------------------------
 
 @api_view(["POST"])
 def register_user(request):
@@ -91,3 +93,85 @@ def delete_user(request, id):
                 {"status": "failed", "message": "User not found", "id": user.id},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+#-------------------------------EmployeeProfile-----------------------------------------
+
+@api_view(["POST"])
+def create_employee_profile(request):
+    pass
+
+@api_view(["GET"])
+def view_employee_profile(request):
+    pass
+
+#-------------------------------EmployeerProfile-----------------------------------------
+
+
+@api_view(["POST"])
+def create_employer_profile(request):
+    pass
+
+@api_view(["GET"])
+def view_employer_profile(request):
+    pass
+
+
+#-------------------------------Skills-----------------------------------------
+@api_view(["POST"])
+def add_skills(request):
+    pass
+
+@api_view(["GET"])
+def get_skills_by_id(request,id):
+    pass
+
+@api_view(["DELETE"])
+def remove_skills(request):
+    pass
+
+#-------------------------------Experience-----------------------------------------
+
+@api_view(["POST"])
+def add_experience(request):
+    pass
+
+@api_view(["GET"])
+def get_experience_by_id(request,id):
+    pass
+
+@api_view(["DELETE"])
+def remove_experience(request):
+    pass
+
+#-------------------------------Job-----------------------------------------
+
+@api_view(["POST"])
+def post_job(request):
+    pass
+
+@api_view(["PATCH"])
+def update_job(request):
+    pass
+
+
+@api_view(["DELETE"])
+def delete_job(request):
+    pass
+
+
+#-------------------------------Application-----------------------------------------
+
+@api_view(["POST"])
+def send_application(request):
+    pass
+
+@api_view(["PATCH"])
+def edit_application(request):
+    pass
+
+@api_view(["GET"])
+def view_application(request):
+    pass
+
+
+
