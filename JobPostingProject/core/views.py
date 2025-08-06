@@ -185,6 +185,3 @@ def edit_application(request):
 @api_view(["GET"])
 def view_application(request):
     pass
-
-
-
