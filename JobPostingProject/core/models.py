@@ -75,3 +75,8 @@ class Job(models.Model):
     workplace = models.CharField(
         max_length=8, choices=WORKPLACE_CHOICES, default="onsite"
     )
+
+class Application(models.Model):
+    employee=models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
+    employer=models.OneToOneField(EmployerProfile)
+    job=models.OneToOneField(Job)
