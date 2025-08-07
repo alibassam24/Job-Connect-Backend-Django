@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
-from serializers import ValidationError
+from rest_framework.exceptions import ValidationError
 
 from .models import *
 
