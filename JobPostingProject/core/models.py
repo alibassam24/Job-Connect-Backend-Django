@@ -79,7 +79,8 @@ class Job(models.Model):
     workplace = models.CharField(
         max_length=8, choices=WORKPLACE_CHOICES, default="onsite"
     )
-    number_of_positions= models.IntegerField(blank=True,null=True)
+    number_of_positions = models.IntegerField(blank=True, null=True)
+
 
 class Application(models.Model):
     employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)

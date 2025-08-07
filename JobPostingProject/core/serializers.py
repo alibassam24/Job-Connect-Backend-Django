@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from rest_framework.validators import ValidationError
 from rest_framework.exceptions import ValidationError
+from rest_framework.validators import ValidationError
 
 from .models import *
 
@@ -51,34 +51,41 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("email cannot be empty")
         if username == User.objects.filter(username=username).exists():
             raise serializers.ValidationError("username already exists")
-        return data 
+        return data
+
 
 class EmployeeProfileSerializer:
     class Meta:
-        model=EmployeeProfile
-        fields=['__all__']
-    #file field validator
+        model = EmployeeProfile
+        fields = ["__all__"]
+
+    # file field validator
     def validate():
-       pass
+        pass
 
 
 class EmployerProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        fields=['__all__']
-    def validate(self,data):
-        company=data.GET.get("company","")
+        fields = ["__all__"]
+
+    def validate(self, data):
+        company = data.GET.get("company", "")
         if not company:
             raise serializers.ValidationError("company cannot be empty")
         return data
-    
+
+
 class JobSerializer(serializers.ModelSerializer):
     pass
+
 
 class ApplicationSerializer(serializers.ModelSerializer):
     pass
 
+
 class SkillsSerializer(serializers.ModelSerializer):
     pass
+
 
 class ExperienceSerializer(models.ModelSerializer):
     pass
