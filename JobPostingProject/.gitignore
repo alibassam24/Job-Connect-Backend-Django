@@ -29,7 +29,8 @@ ENV/
 
 # VS Code
 .vscode/
-
+#media folder
+/media/
 # macOS
 .DS_Store
 

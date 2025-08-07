@@ -7,7 +7,6 @@ from rest_framework.decorators import (
     authentication_classes,
     permission_classes,
 )
-
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -15,7 +14,8 @@ from .serializers import *
 
 # Create your views here.
 
-#-------------------------------USER-----------------------------------------
+# -------------------------------USER-----------------------------------------
+
 
 @api_view(["POST"])
 def register_user(request):
@@ -93,34 +93,60 @@ def delete_user(request, id):
                 {"status": "failed", "message": "User not found"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-#EDIT USER
+
+
+# EDIT USER
 @api_view(["PATCH"])
-def update_user(request,id):
-    if request.user.id== id :
+def update_user(request, id):
+    if request.user.id == id:
         try:
-            user=User.objects.get(id=id)
-            serializer=UpdateUserSerializer(user)
+            user = User.objects.get(id=id)
+            serializer = UpdateUserSerializer(user)
             if serializer.is_valid():
                 serializer.save()
             else:
-                return Response({"status":"failed","message":"invalid data","error":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {
+                        "status": "failed",
+                        "message": "invalid data",
+                        "error": serializer.errors,
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
         except User.DoesNotExist:
-            return Response({"status":"failed","message":"user not found"},status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"status": "failed", "message": "user not found"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
     else:
-        return Response({"status":"failed","message":"permission denied"},status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"status": "failed", "message": "permission denied"},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
+
+
 @api_view(["DELETE"])
 def logout_user(request):
     try:
         request.user.auth_token.delete()
-        return Response({"status":"success","message":"token deleted successfully"},status=status.HTTP_200_OK,)
+        return Response(
+            {"status": "success", "message": "token deleted successfully"},
+            status=status.HTTP_200_OK,
+        )
     except:
-        return Response({"Status":"failed","Message":"exception was thrown"},status=status.HTTP_400_BAD_REQUEST,)
+        return Response(
+            {"Status": "failed", "Message": "exception was thrown"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
-#-------------------------------EmployeeProfile-----------------------------------------
+
+# -------------------------------EmployeeProfile-----------------------------------------
+
 
 @api_view(["POST"])
 def create_employee_profile(request):
     pass
+
 
 @api_view(["GET"])
 def view_employee_profile(request):
@@ -131,87 +157,107 @@ def view_employee_profile(request):
 def edit_employee_profile(request):
     pass
 
-#-------------------------------EmployeerProfile-----------------------------------------
+
+# -------------------------------EmployeerProfile-----------------------------------------
 
 
 @api_view(["POST"])
 def create_employer_profile(request):
     pass
 
+
 @api_view(["GET"])
 def view_employer_profile(request):
     pass
+
 
 @api_view(["POST"])
 def edit_employer_profile(request):
     pass
 
 
-#-------------------------------Skills-----------------------------------------
+# -------------------------------Skills-----------------------------------------
 @api_view(["POST"])
 def add_skills(request):
     pass
 
+
 @api_view(["GET"])
-def get_skills_by_id(request,id):
+def get_skills_by_id(request, id):
     pass
+
 
 @api_view(["DELETE"])
 def remove_skills(request):
     pass
 
-#-------------------------------Experience-----------------------------------------
+
+# -------------------------------Experience-----------------------------------------
+
 
 @api_view(["POST"])
 def add_experience(request):
     pass
 
+
 @api_view(["GET"])
-def get_experience_by_id(request,id):
+def get_experience_by_id(request, id):
     pass
+
 
 @api_view(["DELETE"])
 def remove_experience(request):
     pass
 
+
 @api_view(["POST"])
 def edit_experience(request, experience_id):
     pass
 
-#-------------------------------Job-----------------------------------------
+
+# -------------------------------Job-----------------------------------------
+
 
 @api_view(["POST"])
 def post_job(request):
     pass
 
+
 @api_view(["PATCH"])
 def edit_job(request):
     pass
+
 
 @api_view(["GET"])
 def search_jobs(request):
     pass
 
+
 @api_view(["GET"])
 def view_job(request):
     pass
+
 
 @api_view(["DELETE"])
 def delete_job(request):
     pass
 
+
 ##filter jobs based on diff fields
 ##add pagination
 
-#-------------------------------Application-----------------------------------------
+# -------------------------------Application-----------------------------------------
+
 
 @api_view(["POST"])
 def send_application(request):
     pass
 
+
 @api_view(["PATCH"])
 def edit_application(request):
     pass
+
 
 @api_view(["GET"])
 def view_application(request):
