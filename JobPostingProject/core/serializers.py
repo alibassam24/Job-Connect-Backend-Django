@@ -99,22 +99,22 @@ class JobSerializer(serializers.ModelSerializer):
 
 class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Application
-        fields=['__all__']
-        read_only_fields=['created_at','updated_at']
-
+        model = Application
+        fields = ["__all__"]
+        read_only_fields = ["created_at", "updated_at"]
 
     def validate(self, data):
-        email=data.GET.get("email","")
-        city=data.GET.get("city","")
-        employee_id=data.GET.get("employee","")
-        employer_id=data.GET.get("emploer","")
-        job_id=data.GET.get("job","")
+        email = data.GET.get("email", "")
+        city = data.GET.get("city", "")
+        employee_id = data.GET.get("employee", "")
+        employer_id = data.GET.get("emploer", "")
+        job_id = data.GET.get("job", "")
         if not email:
             raise serializers.ValidationError("email not found")
         if not city:
-            raise serializers.ValidationError("city","")
-        #cannot apply if application already exists 
+            raise serializers.ValidationError("city", "")
+        # cannot apply if application already exists
+
 
 class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
