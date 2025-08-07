@@ -96,6 +96,15 @@ def delete_user(request, id):
 #EDIT USER
 
 
+
+@api_view(["DELETE"])
+def logout_user(request):
+    try:
+        request.user.auth_token.delete()
+        return Response({"status":"success","message":"token deleted successfully"},status=status.HTTP_200_OK,)
+    except:
+        return Response({"Status":"failed","Message":"exception was thrown"},status=status.HTTP_400_BAD_REQUEST,)
+
 #-------------------------------EmployeeProfile-----------------------------------------
 
 @api_view(["POST"])
