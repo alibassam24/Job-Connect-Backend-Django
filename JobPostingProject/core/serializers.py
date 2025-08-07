@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import ValidationError
 
 from .models import *
-
+from serializers import ValidationError
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -31,4 +31,22 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     
     def validate(self,data):
         
-        pass
+        first_name=data.GET.get("first_name","")
+        last_name=data.GET.get("last_name","")
+        role=data.GET.get("role","")
+        username=data.GET.get("username","")
+        email=data.GET.get("email","")
+        title=data.GET.get("title","")
+        if not first_name:
+            raise serializers.ValidationError("first name cannot be empty")
+        if not last_name:
+            raise serializers.ValidationError("last name cannot be empty")
+        if not role:
+            raise serializers.ValidationError("role cannot be empty")
+        if not username:
+            raise serializers.ValidationError("username cannot be empty")
+        if not email:
+            raise serializers.ValidationError("email cannot be empty")
+        if username==User.objects.filter(username=username).exists():
+            raise serializers.ValidationError("username already exists")
+        

@@ -94,9 +94,20 @@ def delete_user(request, id):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 #EDIT USER
-
-
-
+@api_view(["PATCH"])
+def update_user(request,id):
+    if request.user.id== id :
+        try:
+            user=User.objects.get(id=id)
+            serializer=UpdateUserSerializer(user)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response({"status":"failed","message":"invalid data","error":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            return Response({"status":"failed","message":"user not found"},status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({"status":"failed","message":"permission denied"},status=status.HTTP_401_UNAUTHORIZED)
 @api_view(["DELETE"])
 def logout_user(request):
     try:
