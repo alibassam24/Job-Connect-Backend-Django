@@ -51,7 +51,7 @@ class EmployerProfile(models.Model):
         blank=True,
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    city = models.CharField(max_length=20)
+    city = models.CharField(max_length=20, blank=True)
 
 
 class Job(models.Model):

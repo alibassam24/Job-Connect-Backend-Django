@@ -76,16 +76,43 @@ class EmployerProfileSerializer(serializers.ModelSerializer):
 
 
 class JobSerializer(serializers.ModelSerializer):
-    pass
+    class Meta:
+        model: Job
+        fields=['__all__']
+        read_only_fields=['created_at']
+    
+    def validate(self,data):
+        title=data.GET.get("title","")
+        description=data.GET.get("description","")
+       # skills=data.GET.get("skills","")
+       # location=data.GET.get("location","")
+        number=data.GET.get("number_of_positions","")
 
+        if not title:
+            raise serializers.ValidationError("title cannot be empty")
+        if not description:
+            raise serializers.ValidationError("description cannot be empty")
+        if number<0:
+            raise serializers.ValidationError("number cannot be negative")
+        return data
 
 class ApplicationSerializer(serializers.ModelSerializer):
     pass
 
 
 class SkillsSerializer(serializers.ModelSerializer):
-    pass
-
-
+    class Meta:
+        model=Skills
+        fields=['__all__']
+    def validate(self,data):
+        name=data.GET.get("name","")
+        if not name:
+            raise serializers.ValidationError("Skill cannot be empty")
+        return data
+    
 class ExperienceSerializer(models.ModelSerializer):
-    pass
+    class Meta:
+        model=Experience
+        fields=['__all__']
+
+
