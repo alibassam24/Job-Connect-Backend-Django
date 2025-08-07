@@ -114,5 +114,17 @@ class ExperienceSerializer(models.ModelSerializer):
     class Meta:
         model=Experience
         fields=['__all__']
-
-
+    def validate(self,data):
+        company=data.GET.get("company","")
+        start_date=data.GET.get("start_date","")
+        end_date=data.GET.get("end_date","")
+        if not company:
+            raise serializers.ValidationError("company cannot be empty")
+        if not start_date:
+            raise serializers.ValidationError("start date cannot be empty")
+        if start_date>end_date:
+            raise serializers.ValidationError("start date cannot be greater than end date")
+        
+        return data
+    
+    
