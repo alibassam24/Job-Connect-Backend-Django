@@ -51,16 +51,22 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("email cannot be empty")
         if username == User.objects.filter(username=username).exists():
             raise serializers.ValidationError("username already exists")
-
+        return data 
 
 class EmployeeProfileSerializer:
     class Meta:
         model=EmployeeProfile
         fields=['__all__']
-    
+    #file field validator
     def validate():
-        pass
+       pass
 
 
 class EmployerProfileSerializer:
-    pass
+    class Meta:
+        fields=['__all__']
+    def validate(self,data):
+        company=data.GET.get("company","")
+        if not company:
+            raise serializers.ValidationError("company cannot be empty")
+        return data
