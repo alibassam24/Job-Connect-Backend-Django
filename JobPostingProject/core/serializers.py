@@ -62,7 +62,7 @@ class EmployeeProfileSerializer:
        pass
 
 
-class EmployerProfileSerializer:
+class EmployerProfileSerializer(serializers.ModelSerializer):
     class Meta:
         fields=['__all__']
     def validate(self,data):
@@ -70,3 +70,15 @@ class EmployerProfileSerializer:
         if not company:
             raise serializers.ValidationError("company cannot be empty")
         return data
+    
+class JobSerializer(serializers.ModelSerializer):
+    pass
+
+class ApplicationSerializer(serializers.ModelSerializer):
+    pass
+
+class SkillsSerializer(serializers.ModelSerializer):
+    pass
+
+class ExperienceSerializer(models.ModelSerializer):
+    pass

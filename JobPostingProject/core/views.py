@@ -97,6 +97,8 @@ def delete_user(request, id):
 
 # EDIT USER
 @api_view(["PATCH"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def update_user(request, id):
     if request.user.id == id:
         try:
@@ -126,6 +128,8 @@ def update_user(request, id):
 
 
 @api_view(["DELETE"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def logout_user(request):
     try:
         request.user.auth_token.delete()
@@ -178,16 +182,22 @@ def edit_employer_profile(request):
 
 # -------------------------------Skills-----------------------------------------
 @api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def add_skills(request):
     pass
 
 
 @api_view(["GET"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_skills_by_id(request, id):
     pass
 
 
 @api_view(["DELETE"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def remove_skills(request):
     pass
 
@@ -196,21 +206,29 @@ def remove_skills(request):
 
 
 @api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def add_experience(request):
     pass
 
 
 @api_view(["GET"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_experience_by_id(request, id):
     pass
 
 
 @api_view(["DELETE"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def remove_experience(request):
     pass
 
 
 @api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def edit_experience(request, experience_id):
     pass
 
@@ -219,26 +237,36 @@ def edit_experience(request, experience_id):
 
 
 @api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def post_job(request):
     pass
 
 
 @api_view(["PATCH"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def edit_job(request):
     pass
 
 
 @api_view(["GET"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def search_jobs(request):
     pass
 
 
 @api_view(["GET"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def view_job(request):
     pass
 
 
 @api_view(["DELETE"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def delete_job(request):
     pass
 
@@ -250,15 +278,21 @@ def delete_job(request):
 
 
 @api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def send_application(request):
     pass
 
 
 @api_view(["PATCH"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def edit_application(request):
     pass
 
 
 @api_view(["GET"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def view_application(request):
     pass
