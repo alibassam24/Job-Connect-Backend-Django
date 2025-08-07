@@ -93,6 +93,8 @@ def delete_user(request, id):
                 {"status": "failed", "message": "User not found"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+#EDIT USER
+
 
 #-------------------------------EmployeeProfile-----------------------------------------
 
@@ -104,6 +106,11 @@ def create_employee_profile(request):
 def view_employee_profile(request):
     pass
 
+
+@api_view(["POST"])
+def edit_employee_profile(request):
+    pass
+
 #-------------------------------EmployeerProfile-----------------------------------------
 
 
@@ -113,6 +120,10 @@ def create_employer_profile(request):
 
 @api_view(["GET"])
 def view_employer_profile(request):
+    pass
+
+@api_view(["POST"])
+def edit_employer_profile(request):
     pass
 
 
@@ -158,7 +169,7 @@ def edit_job(request):
     pass
 
 @api_view(["GET"])
-def search_job(request):
+def search_jobs(request):
     pass
 
 @api_view(["GET"])
