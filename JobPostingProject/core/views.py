@@ -6,7 +6,9 @@ from rest_framework.decorators import (
     api_view,
     authentication_classes,
     permission_classes,
+    parser_classes,
 )
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -148,9 +150,14 @@ def logout_user(request):
 
 
 @api_view(["POST"])
+@parser_classes([MultiPartParser,FormParser])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def create_employee_profile(request):
-    serializer = EmployeeProfileSerializer(data=request.data)
-    if serializer.is_valid():
+    data=request.data.copy()
+    data["user"]=request.user.id    
+    serializer = EmployeeProfileSerializer(data=data)
+    if serializer.is_valid():  
         serializer.save()
         return Response(
             {

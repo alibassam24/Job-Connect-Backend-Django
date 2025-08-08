@@ -28,7 +28,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["__all__"]
+        fields = "__all__"
         read_only_fields = ["created_at", "updated_at"]
 
     def validate(self, data):
@@ -54,19 +54,16 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         return data
 
 
-class EmployeeProfileSerializer:
+class EmployeeProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmployeeProfile
-        fields = ["__all__"]
+        fields = "__all__"
 
-    # file field validator
-    # def validate():
-    # pass
-
+   
 
 class EmployerProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ["__all__"]
+        fields = "__all__"
 
     def validate(self, data):
         company = data.GET.get("company", "")
@@ -78,7 +75,7 @@ class EmployerProfileSerializer(serializers.ModelSerializer):
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model: Job
-        fields = ["__all__"]
+        fields = "__all__"
         read_only_fields = ["created_at"]
 
     def validate(self, data):
@@ -100,7 +97,7 @@ class JobSerializer(serializers.ModelSerializer):
 class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
-        fields = ["__all__"]
+        fields = "__all__"
         read_only_fields = ["created_at", "updated_at"]
 
     def validate(self, data):
@@ -119,7 +116,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
 class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skills
-        fields = ["__all__"]
+        fields = "__all__"
 
     def validate(self, data):
         name = data.GET.get("name", "")
@@ -131,7 +128,7 @@ class SkillsSerializer(serializers.ModelSerializer):
 class ExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experience
-        fields = ["__all__"]
+        fields = "__all__"
 
     def validate(self, data):
         company = data.GET.get("company", "")
