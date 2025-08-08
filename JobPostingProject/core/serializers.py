@@ -59,7 +59,6 @@ class EmployeeProfileSerializer(serializers.ModelSerializer):
         model = EmployeeProfile
         fields = "__all__"
 
-   
 
 class EmployerProfileSerializer(serializers.ModelSerializer):
     class Meta:
