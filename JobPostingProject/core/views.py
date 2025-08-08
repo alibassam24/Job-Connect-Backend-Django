@@ -151,7 +151,7 @@ def logout_user(request):
 @permission_classes([IsAuthenticated])
 def create_employee_profile(request):
     data = request.data.copy()
-    data["user"] = request.user.id
+    data.get("user") = request.user.id
     serializer = EmployeeProfileSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
@@ -175,7 +175,7 @@ def create_employee_profile(request):
 
 
 @api_view(["GET"])
-def view_employee_profile(request):
+def view_employee_profile(request,id):
     pass
 
 

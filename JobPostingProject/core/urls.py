@@ -16,7 +16,7 @@ urlpatterns = [
     path(
         "create-employee-profile/",
         create_employee_profile,
-        name="create-employee-profile",
+        name="create-employee-profile"
     ),
 ]
 
