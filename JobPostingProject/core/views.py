@@ -149,8 +149,27 @@ def logout_user(request):
 
 @api_view(["POST"])
 def create_employee_profile(request):
-    
-    pass
+    serializer = EmployeeProfileSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {
+                "status": "success",
+                "message": "employee created",
+                "Data": serializer.data,
+            },
+            status=status.HTTP_201_CREATED,
+        )
+    else:
+        return Response(
+            {
+                "status": "failed",
+                "message": "invalid data",
+                "errors": serializer.errors,
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
 
 @api_view(["GET"])
 def view_employee_profile(request):

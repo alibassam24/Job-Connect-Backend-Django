@@ -60,8 +60,8 @@ class EmployeeProfileSerializer:
         fields = ["__all__"]
 
     # file field validator
-    def validate():
-        pass
+    # def validate():
+    # pass
 
 
 class EmployerProfileSerializer(serializers.ModelSerializer):
@@ -137,7 +137,7 @@ class ExperienceSerializer(serializers.ModelSerializer):
         company = data.GET.get("company", "")
         start_date = data.GET.get("start_date", "")
         end_date = data.GET.get("end_date", "")
-        responsibilities= data.GET.get("responsibilities","")
+        responsibilities = data.GET.get("responsibilities", "")
         if not company:
             raise serializers.ValidationError("company cannot be empty")
         if not start_date:
