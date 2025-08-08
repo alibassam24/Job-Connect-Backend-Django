@@ -2,8 +2,12 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (api_view, authentication_classes,
-                                       parser_classes, permission_classes)
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    parser_classes,
+    permission_classes,
+)
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -151,7 +155,7 @@ def logout_user(request):
 @permission_classes([IsAuthenticated])
 def create_employee_profile(request):
     data = request.data.copy()
-    data.get("user") = request.user.id
+    data["user"] = request.user.id
     serializer = EmployeeProfileSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
@@ -175,7 +179,7 @@ def create_employee_profile(request):
 
 
 @api_view(["GET"])
-def view_employee_profile(request,id):
+def view_employee_profile(request, id):
     pass
 
 
