@@ -149,8 +149,8 @@ def logout_user(request):
 
 @api_view(["POST"])
 def create_employee_profile(request):
+    
     pass
-
 
 @api_view(["GET"])
 def view_employee_profile(request):

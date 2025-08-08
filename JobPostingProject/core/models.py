@@ -21,6 +21,11 @@ class User(AbstractUser):
         blank=True,
     )
 
+    # updated_at = 
+    # created_at = 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 # Best Practice to create seperate profiles for different types of users
 class EmployeeProfile(models.Model):
@@ -41,7 +46,7 @@ class Experience(models.Model):
     duration = models.CharField(max_length=20, blank=True, null=True)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
-    description = models.CharField(max_length=500)
+    responsibilities = models.CharField(max_length=500,blank=True,null=True) #responsiblities
     employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
 
 

@@ -107,7 +107,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
         email = data.GET.get("email", "")
         city = data.GET.get("city", "")
         employee_id = data.GET.get("employee", "")
-        employer_id = data.GET.get("emploer", "")
+        employer_id = data.GET.get("employer", "")
         job_id = data.GET.get("job", "")
         if not email:
             raise serializers.ValidationError("email not found")
@@ -137,6 +137,7 @@ class ExperienceSerializer(serializers.ModelSerializer):
         company = data.GET.get("company", "")
         start_date = data.GET.get("start_date", "")
         end_date = data.GET.get("end_date", "")
+        responsibilities= data.GET.get("responsibilities","")
         if not company:
             raise serializers.ValidationError("company cannot be empty")
         if not start_date:
@@ -145,5 +146,4 @@ class ExperienceSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "start date cannot be greater than end date"
             )
-
         return data
