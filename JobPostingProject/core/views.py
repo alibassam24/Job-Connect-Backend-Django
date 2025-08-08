@@ -179,8 +179,18 @@ def create_employee_profile(request):
 
 
 @api_view(["GET"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def view_employee_profile(request, id):
-    pass
+    try:
+        employee=EmployeeProfile.objects.get(id=id)
+        if request.user.id==employee.user.id:
+            serializer=EmployeeProfileSerializer(employee)
+            return Response({"status":"success","message":"employee fetched","data":serializer.data},status=status.HTTP_200_OK,)
+        else:
+            return Response({"status":"failed","message":"not authorized"},status=status.HTTP_401_UNAUTHORIZED)
+    except EmployeeProfile.DoesNotExist:
+        return Response({"status":"failed","message":"Employee Not found"},status=status.HTTP_404_NOT_FOUND,)
 
 
 @api_view(["POST"])

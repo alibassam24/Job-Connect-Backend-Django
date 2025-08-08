@@ -18,6 +18,7 @@ urlpatterns = [
         create_employee_profile,
         name="create-employee-profile",
     ),
+    path("view-employee-profile/<int:id>/",view_employee_profile,name="view-employee-profile")
 ]
 
 if settings.DEBUG:
