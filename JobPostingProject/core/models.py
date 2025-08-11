@@ -28,7 +28,7 @@ class User(AbstractUser):
 
 # Best Practice to create seperate profiles for different types of users
 class EmployeeProfile(models.Model):
-    file = models.FileField(upload_to="uploads/")
+    file = models.FileField(upload_to="uploads/",null=True,blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     city = models.CharField(max_length=20)
     phone_number = models.CharField(max_length=11)
