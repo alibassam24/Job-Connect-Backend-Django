@@ -2,12 +2,8 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    parser_classes,
-    permission_classes,
-)
+from rest_framework.decorators import (api_view, authentication_classes,
+                                       parser_classes, permission_classes)
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -340,7 +336,8 @@ def add_skills(request):
     id = request.user.id
     try:
         employee = EmployeeProfile.objects.get(user=id)
-        data["employee"] = employee.GET.get("id")
+        # data["employee"] = employee.GET.get("id","") GET only works on request
+        data["employee"] = employee.id
         serializer = SkillsSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -354,7 +351,11 @@ def add_skills(request):
             )
         else:
             return Response(
-                {"status": "failed", "message": "invalid data"},
+                {
+                    "status": "failed",
+                    "message": "invalid data",
+                    "errors": serializer.errors,
+                },
                 status=status.HTTP_400_BAD_REQUEST,
             )
     except EmployeeProfile.DoesNotExist:

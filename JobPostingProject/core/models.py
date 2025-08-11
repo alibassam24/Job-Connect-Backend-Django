@@ -39,9 +39,13 @@ class Skills(models.Model):
     name = models.CharField(max_length=15)
     employee = models.ManyToManyField(EmployeeProfile)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Experience(models.Model):
     company = models.CharField(max_length=50)
+    job_title = models.CharField(max_length=20, null=True, blank=True)
     duration = models.CharField(max_length=20, blank=True, null=True)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
@@ -49,6 +53,9 @@ class Experience(models.Model):
         max_length=500, blank=True, null=True
     )  # responsiblities
     employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.job_title}"
 
 
 class EmployerProfile(models.Model):
@@ -87,6 +94,9 @@ class Job(models.Model):
     )
     number_of_positions = models.IntegerField(blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.title}"
+
 
 class Application(models.Model):
     employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
@@ -98,3 +108,5 @@ class Application(models.Model):
     city = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    # using super key--research
