@@ -62,21 +62,21 @@ class EmployeeProfileSerializer(serializers.ModelSerializer):
 
 class UpdateEmployeeSerializer(serializers.ModelSerializer):
     class Meta:
-        model=EmployeeProfile
+        model = EmployeeProfile
         fields = "__all__"
         read_only_fields = ["user"]
 
     def validate(self, data):
         city = data.get("city", "")
         phone_number = data.get("phone_number", "")
-        introduction=data.get("introduction","")
+        introduction = data.get("introduction", "")
         if not city:
             raise serializers.ValidationError("city cannot be empty")
         if not phone_number:
             raise serializers.ValidationError("phone number cannot be empty")
         if not introduction:
             raise serializers.ValidationError("introduction cannot be empty")
-        
+
         return data
 
 
@@ -89,6 +89,15 @@ class EmployerProfileSerializer(serializers.ModelSerializer):
         if not company:
             raise serializers.ValidationError("company cannot be empty")
         return data
+
+
+class UpdateEmployerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmployeeProfile
+        fields = "__all__"
+        read_only_fields = ["user"]
+
+    # validator------
 
 
 class JobSerializer(serializers.ModelSerializer):

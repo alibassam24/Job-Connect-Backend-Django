@@ -2,8 +2,12 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (api_view, authentication_classes,
-                                       parser_classes, permission_classes)
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    parser_classes,
+    permission_classes,
+)
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -206,10 +210,12 @@ def view_employee_profile(request, id):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def edit_employee_profile(request, id):
-    if request.user.id==id:
+    if request.user.id == id:
         try:
             employee = EmployeeProfile.objects.get(id=id)
-            serializer = UpdateEmployeeSerializer(employee, data=request.data, partial=True)
+            serializer = UpdateEmployeeSerializer(
+                employee, data=request.data, partial=True
+            )
             if serializer.is_valid():
                 serializer.save()
                 return Response(
@@ -222,7 +228,11 @@ def edit_employee_profile(request, id):
                 )
             else:
                 return Response(
-                    {"status": "failed", "message": "invalid data","Errors":serializer.errors},
+                    {
+                        "status": "failed",
+                        "message": "invalid data",
+                        "Errors": serializer.errors,
+                    },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
         except EmployeeProfile.DoesNotExist:
@@ -231,41 +241,91 @@ def edit_employee_profile(request, id):
                 status=status.HTTP_404_NOT_FOUND,
             )
     else:
-        return Response({"status":"failed","message":"unauthorized"},status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {"status": "failed", "message": "unauthorized"},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
+
 
 # -------------------------------EmployeerProfile----------------------------------------->>>>
 
 
 @api_view(["POST"])
 def create_employer_profile(request):
-    data=request.data.copy()
-    data["user"]=request.user.id
-    serializer=EmployerProfileSerializer(data=data)
+    data = request.data.copy()
+    data["user"] = request.user.id
+    serializer = EmployerProfileSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
-        return Response({"status":"success","message":"employer created","data":serializer.data,},status=status.HTTP_201_CREATED)
+        return Response(
+            {
+                "status": "success",
+                "message": "employer created",
+                "data": serializer.data,
+            },
+            status=status.HTTP_201_CREATED,
+        )
     else:
-        return Response({"status":"failed","message":"invalid data","errors":serializer.errors,},status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {
+                "status": "failed",
+                "message": "invalid data",
+                "errors": serializer.errors,
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 @api_view(["GET"])
-def view_employer_profile(request,id):
+def view_employer_profile(request, id):
     if not id:
-        return Response({"status":"failed","message":"id not found"},status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"status": "failed", "message": "id not found"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     else:
         try:
-            employer=EmployerProfile.objects.get(id==id)
-            serializer=EmployeeProfileSerializer(employer)
-            #if serializer.is_valid():
-            return Response({"status":"success","message":"Employee fetched successfully","data":serializer.data},status=status.HTTP_200_OK)
-            #else:
-             #   return Response({"":"","":"","":serializer.errors},status=status.)
+            employer = EmployerProfile.objects.get(id == id)
+            serializer = EmployeeProfileSerializer(employer)
+            # if serializer.is_valid():
+            return Response(
+                {
+                    "status": "success",
+                    "message": "Employee fetched successfully",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
+            # else:
+            #   return Response({"":"","":"","":serializer.errors},status=status.)
         except EmployeeProfile.DoesNotExist:
-            return Response({"status":"failed","message":"employer not found"},status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"status": "failed", "message": "employer not found"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-@api_view(["POST"])
-def edit_employer_profile(request):
-    pass
+
+@api_view(["PATCH"])
+def edit_employer_profile(request, id):
+    try:
+        employer = EmployerProfile.objects.get(id=id)
+        serializer = UpdateEmployerSerializer(employer, data=request.data, partial=True)
+        if serializer.is_valid():
+            return Response(
+                {
+                    "status": "success",
+                    "message": "emploer profile updated",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return
+    except EmployerProfile.DoesNotExist:
+        return Response(
+            {"status": "failed", "message": "employer not found"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
 
 
 # -------------------------------Skills----------------------------------------->>>>
@@ -384,6 +444,7 @@ def edit_application(request):
 @permission_classes([IsAuthenticated])
 def view_application(request):
     pass
+
 
 @api_view(["DELETE"])
 @authentication_classes([TokenAuthentication])
