@@ -60,6 +60,15 @@ class EmployeeProfileSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class UpdateEmployeeSerializer(serializers.ModelSerializer):
+    fields = "__all__"
+    read_only_fields = ["user"]
+
+    def validate(self, data):
+
+        return data
+
+
 class EmployerProfileSerializer(serializers.ModelSerializer):
     class Meta:
         fields = "__all__"

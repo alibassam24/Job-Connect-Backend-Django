@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
+##add created_at and updated_at to all models (best practice)
 class User(AbstractUser):
     # default id
     # default password

@@ -16,7 +16,7 @@ from .serializers import *
 
 # Create your views here.
 
-# -------------------------------USER-----------------------------------------
+# -------------------------------USER----------------------------------------->>>>
 
 
 @api_view(["POST"])
@@ -105,7 +105,7 @@ def update_user(request, id):
     if request.user.id == id:
         try:
             user = User.objects.get(id=id)
-            serializer = UpdateUserSerializer(user)
+            serializer = UpdateUserSerializer(user, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
             else:
@@ -146,7 +146,7 @@ def logout_user(request):
         )
 
 
-# -------------------------------EmployeeProfile-----------------------------------------
+# -------------------------------EmployeeProfile----------------------------------------->>>>
 
 
 @api_view(["POST"])
@@ -183,22 +183,56 @@ def create_employee_profile(request):
 @permission_classes([IsAuthenticated])
 def view_employee_profile(request, id):
     try:
-        employee=EmployeeProfile.objects.get(id=id)
-        if request.user.id==employee.user.id:
-            serializer=EmployeeProfileSerializer(employee)
-            return Response({"status":"success","message":"employee fetched","data":serializer.data},status=status.HTTP_200_OK,)
+        employee = EmployeeProfile.objects.get(id=id)
+        if request.user.id == employee.user.id:
+            serializer = EmployeeProfileSerializer(employee)
+            return Response(
+                {
+                    "status": "success",
+                    "message": "employee fetched",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
         else:
-            return Response({"status":"failed","message":"not authorized"},status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"status": "failed", "message": "not authorized"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
     except EmployeeProfile.DoesNotExist:
-        return Response({"status":"failed","message":"Employee Not found"},status=status.HTTP_404_NOT_FOUND,)
+        return Response(
+            {"status": "failed", "message": "Employee Not found"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
 
 
-@api_view(["POST"])
-def edit_employee_profile(request):
-    pass
+@api_view(["PATCH"])
+def edit_employee_profile(request, id):
+    try:
+        employee = EmployeeProfile.objects.get(id=id)
+        serializer = UpdateEmployeeSerializer(employee, data=request.data, partial=True)
+        if serializer.is_valid():
+            return Response(
+                {
+                    "status": "success",
+                    "message": "employee profile updated successfully",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {"status": "failed", "message": "invalid data"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+    except EmployeeProfile.DoesNotExist:
+        return Response(
+            {"status": "failed", "message": "Employee not found"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
 
 
-# -------------------------------EmployeerProfile-----------------------------------------
+# -------------------------------EmployeerProfile----------------------------------------->>>>
 
 
 @api_view(["POST"])
@@ -216,7 +250,7 @@ def edit_employer_profile(request):
     pass
 
 
-# -------------------------------Skills-----------------------------------------
+# -------------------------------Skills----------------------------------------->>>>
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -238,7 +272,7 @@ def remove_skills(request):
     pass
 
 
-# -------------------------------Experience-----------------------------------------
+# -------------------------------Experience----------------------------------------->>>>
 
 
 @api_view(["POST"])
@@ -269,7 +303,7 @@ def edit_experience(request, experience_id):
     pass
 
 
-# -------------------------------Job-----------------------------------------
+# -------------------------------Job----------------------------------------->>>
 
 
 @api_view(["POST"])
@@ -310,7 +344,7 @@ def delete_job(request):
 ##filter jobs based on diff fields
 ##add pagination
 
-# -------------------------------Application-----------------------------------------
+# -------------------------------Application----------------------------------------->>>>
 
 
 @api_view(["POST"])
