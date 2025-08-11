@@ -238,13 +238,30 @@ def edit_employee_profile(request, id):
 
 @api_view(["POST"])
 def create_employer_profile(request):
-    pass
+    data=request.data.copy()
+    data["user"]=request.user.id
+    serializer=EmployerProfileSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"status":"success","message":"employer created","data":serializer.data,},status=status.HTTP_201_CREATED)
+    else:
+        return Response({"status":"failed","message":"invalid data","errors":serializer.errors,},status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
-def view_employer_profile(request):
-    pass
-
+def view_employer_profile(request,id):
+    if not id:
+        return Response({"status":"failed","message":"id not found"},status=status.HTTP_400_BAD_REQUEST)
+    else:
+        try:
+            employer=EmployerProfile.objects.get(id==id)
+            serializer=EmployeeProfileSerializer(employer)
+            #if serializer.is_valid():
+            return Response({"status":"success","message":"Employee fetched successfully","data":serializer.data},status=status.HTTP_200_OK)
+            #else:
+             #   return Response({"":"","":"","":serializer.errors},status=status.)
+        except EmployeeProfile.DoesNotExist:
+            return Response({"status":"failed","message":"employer not found"},status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["POST"])
 def edit_employer_profile(request):
@@ -366,4 +383,10 @@ def edit_application(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def view_application(request):
+    pass
+
+@api_view(["DELETE"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def delete_application():
     pass
