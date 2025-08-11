@@ -49,6 +49,16 @@ urlpatterns = [
         add_skills,
         name="add-skills",
     ),
+    path(
+        "view-skills-by-user-id/<int:id>",
+        view_skills_by_user_id,
+        name="view-skills-by-user-id",
+    ),
+    path(
+        "remove-skills/<int:id>",
+        remove_skills,
+        name="remove-skills",
+    ),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

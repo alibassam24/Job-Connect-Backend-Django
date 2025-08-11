@@ -371,15 +371,43 @@ def add_skills(request):
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def get_skills_by_id(request, id):
-    pass
+def view_skills_by_user_id(request, id):
+    skills = Skills.objects.filter(employee=id)
+    serializer = SkillsSerializer(skills, many=True)
+    return Response(
+        {
+            "status": "success",
+            "messaage": "skills fetched successfully",
+            "data": serializer.data,
+        },
+        status=status.HTTP_202_ACCEPTED,
+    )
 
 
 @api_view(["DELETE"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def remove_skills(request):
-    pass
+def remove_skills(request, id):
+    try:
+        skill = Skills.objects.get(id=id)
+        employee = EmployeeProfile.objects.get(user=request.user)
+
+        if employee in skill.employee.all():
+            skill.delete()
+            return Response(
+                {"status": "success", "message": "skill deleted successfully"},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {"status": "failed", "message": "user not allowed"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+    except Skills.DoesNotExist:
+        return Response(
+            {"status": "failed", "message": "skill not found"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 # -------------------------------Experience----------------------------------------->>>>
