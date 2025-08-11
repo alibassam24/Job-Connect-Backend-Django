@@ -206,7 +206,7 @@ def view_employee_profile(request, id):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def edit_employee_profile(request, id):
-   
+    if request.user.id==id:
         try:
             employee = EmployeeProfile.objects.get(id=id)
             serializer = UpdateEmployeeSerializer(employee, data=request.data, partial=True)
@@ -230,7 +230,8 @@ def edit_employee_profile(request, id):
                 {"status": "failed", "message": "Employee not found"},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
+    else:
+        return Response({"status":"failed","message":"unauthorized"},status=status.HTTP_401_UNAUTHORIZED)
 
 # -------------------------------EmployeerProfile----------------------------------------->>>>
 
