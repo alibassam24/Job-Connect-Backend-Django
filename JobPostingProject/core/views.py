@@ -323,7 +323,10 @@ def edit_employer_profile(request, id):
             return
     except EmployerProfile.DoesNotExist:
         return Response(
-            {"status": "failed", "message": "employer not found"},
+            {
+                "status": "failed",
+                "message": "employer not found",
+            },
             status=status.HTTP_404_NOT_FOUND,
         )
 
@@ -333,7 +336,35 @@ def edit_employer_profile(request, id):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def add_skills(request):
-    pass
+    data = request.data.copy()
+    id = request.user.id
+    try:
+        employee = EmployeeProfile.objects.get(user=id)
+        data["employee"] = employee.GET.get("id")
+        serializer = SkillsSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "status": "success",
+                    "message": "skill added",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        else:
+            return Response(
+                {"status": "failed", "message": "invalid data"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+    except EmployeeProfile.DoesNotExist:
+        return Response(
+            {
+                "status": "failed",
+                "message": "employee not found",
+            },
+            status=status.HTTP_404_NOT_FOUND,
+        )
 
 
 @api_view(["GET"])

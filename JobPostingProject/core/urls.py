@@ -43,6 +43,12 @@ urlpatterns = [
         view_employer_profile,
         name="view-employee-profile",
     ),
+    # SKILLS-->
+    path(
+        "add-skills/",
+        add_skills,
+        name="add-skills",
+    ),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
