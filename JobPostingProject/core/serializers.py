@@ -33,12 +33,12 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
 
-        first_name = data.GET.get("first_name", "")
-        last_name = data.GET.get("last_name", "")
-        role = data.GET.get("role", "")
-        username = data.GET.get("username", "")
-        email = data.GET.get("email", "")
-        title = data.GET.get("title", "")
+        first_name = data.get("first_name", "")
+        last_name = data.get("last_name", "")
+        role = data.get("role", "")
+        username = data.get("username", "")
+        email = data.get("email", "")
+        title = data.get("title", "")
         if not first_name:
             raise serializers.ValidationError("first name cannot be empty")
         if not last_name:
@@ -59,23 +59,20 @@ class EmployeeProfileSerializer(serializers.ModelSerializer):
         model = EmployeeProfile
         fields = "__all__"
 
-class UpdateEmployeeSerializer(serializers.ModelSerializer):
-    fields="__all__"
-    read_only_fields=['user']
 
-    def validate(self,data):
-        city=data.GET.get("city","")
-        phone_number=data.GET.get("phone_number","")
+class UpdateEmployeeSerializer(serializers.ModelSerializer):
+    fields = "__all__"
+    read_only_fields = ["user"]
+
+    def validate(self, data):
+        city = data.get("city", "")
+        phone_number = data.get("phone_number", "")
         if not city:
             return serializers.ValidationError("city cannot be empty")
         if not phone_number:
-            return serializers.ValidationError("phone number cannot be empty ")
-        if not city:
-            return serializers.ValidationError("city cannot be empty")
-        if not city:
-            return serializers.ValidationError("city cannot be empty")
-               
+            return serializers.ValidationError("phone number cannot be empty")
         return data
+
 
 class EmployerProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -86,8 +83,6 @@ class EmployerProfileSerializer(serializers.ModelSerializer):
         if not company:
             raise serializers.ValidationError("company cannot be empty")
         return data
-
-
 
 
 class JobSerializer(serializers.ModelSerializer):

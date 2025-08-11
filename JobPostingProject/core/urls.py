@@ -11,7 +11,7 @@ urlpatterns = [
     path("login-user/", login_user, name="login-user/"),
     path("delete-user/<int:id>/", delete_user, name="delete-user"),
     path("logout-user/", logout_user, name="logout-user"),
-    path("update-user/<int:id>", update_user, name="update-user"),
+    path("update-user/<int:id>/", update_user, name="update-user"),
     # EMPLOYEE-->
     path(
         "create-employee-profile/",
@@ -23,7 +23,7 @@ urlpatterns = [
         view_employee_profile,
         name="view-employee-profile",
     ),
+    path("edit-employee-profile/<int:id>/",edit_employee_profile,name="edit-employee-profile",)
 ]
-
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

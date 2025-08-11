@@ -105,7 +105,7 @@ def update_user(request, id):
     if request.user.id == id:
         try:
             user = User.objects.get(id=id)
-            serializer = UpdateUserSerializer(user,data=request.data,partial=True)
+            serializer = UpdateUserSerializer(user, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
             else:
@@ -183,27 +183,53 @@ def create_employee_profile(request):
 @permission_classes([IsAuthenticated])
 def view_employee_profile(request, id):
     try:
-        employee=EmployeeProfile.objects.get(id=id)
-        if request.user.id==employee.user.id:
-            serializer=EmployeeProfileSerializer(employee)
-            return Response({"status":"success","message":"employee fetched","data":serializer.data},status=status.HTTP_200_OK,)
+        employee = EmployeeProfile.objects.get(id=id)
+        if request.user.id == employee.user.id:
+            serializer = EmployeeProfileSerializer(employee)
+            return Response(
+                {
+                    "status": "success",
+                    "message": "employee fetched",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
         else:
-            return Response({"status":"failed","message":"not authorized"},status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"status": "failed", "message": "not authorized"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
     except EmployeeProfile.DoesNotExist:
-        return Response({"status":"failed","message":"Employee Not found"},status=status.HTTP_404_NOT_FOUND,)
+        return Response(
+            {"status": "failed", "message": "Employee Not found"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
 
 
 @api_view(["PATCH"])
-def edit_employee_profile(request,id):
+def edit_employee_profile(request, id):
     try:
-        employee=EmployeeProfile.objects.get(id=id)
-        serializer=UpdateEmployeeSerializer(employee, data=request.data,partial=True)
+        employee = EmployeeProfile.objects.get(id=id)
+        serializer = UpdateEmployeeSerializer(employee, data=request.data, partial=True)
         if serializer.is_valid():
-            return Response({"status":"success","message":"employee profile updated successfully","data":serializer.data},status=status.HTTP_200_OK)
+            return Response(
+                {
+                    "status": "success",
+                    "message": "employee profile updated successfully",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
         else:
-            return Response({"status":"failed","message":"invalid data"},status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"status": "failed", "message": "invalid data"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
     except EmployeeProfile.DoesNotExist:
-        return Response({"status":"failed","message":"Employee not found"},status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"status": "failed", "message": "Employee not found"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
 
 
 # -------------------------------EmployeerProfile----------------------------------------->>>>
