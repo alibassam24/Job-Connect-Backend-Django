@@ -2,12 +2,8 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    parser_classes,
-    permission_classes,
-)
+from rest_framework.decorators import (api_view, authentication_classes,
+                                       parser_classes, permission_classes)
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -207,29 +203,33 @@ def view_employee_profile(request, id):
 
 
 @api_view(["PATCH"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def edit_employee_profile(request, id):
-    try:
-        employee = EmployeeProfile.objects.get(id=id)
-        serializer = UpdateEmployeeSerializer(employee, data=request.data, partial=True)
-        if serializer.is_valid():
+   
+        try:
+            employee = EmployeeProfile.objects.get(id=id)
+            serializer = UpdateEmployeeSerializer(employee, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "employee profile updated successfully",
+                        "data": serializer.data,
+                    },
+                    status=status.HTTP_200_OK,
+                )
+            else:
+                return Response(
+                    {"status": "failed", "message": "invalid data","Errors":serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except EmployeeProfile.DoesNotExist:
             return Response(
-                {
-                    "status": "success",
-                    "message": "employee profile updated successfully",
-                    "data": serializer.data,
-                },
-                status=status.HTTP_200_OK,
+                {"status": "failed", "message": "Employee not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
-        else:
-            return Response(
-                {"status": "failed", "message": "invalid data"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-    except EmployeeProfile.DoesNotExist:
-        return Response(
-            {"status": "failed", "message": "Employee not found"},
-            status=status.HTTP_404_NOT_FOUND,
-        )
 
 
 # -------------------------------EmployeerProfile----------------------------------------->>>>

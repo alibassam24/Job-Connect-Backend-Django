@@ -23,7 +23,7 @@ urlpatterns = [
         view_employee_profile,
         name="view-employee-profile",
     ),
-    path("edit-employee-profile/<int:id>/",edit_employee_profile,name="edit-employee-profile",)
+    path("edit-employee-profile/<int:id>/",edit_employee_profile,name="edit-employee-profile",),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
