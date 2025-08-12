@@ -527,13 +527,23 @@ def get_experiences_for_employee(request, id):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def remove_experience(request, id):
+    user_id=request.user.id
+    try:    
+        employee=EmployeeProfile.objects.get(user=user_id)
+    except:
+        return Response({"status":"failed","message":"employee not found against user id"},status=status.HTTP_400_BAD_REQUEST)
+    employee_id=employee.id 
+   
     try:
         experience = Experience.objects.get(id=id)
-        experience.delete()
-        return Response(
-            {"status": "success", "message": "experience deleted successfully"},
-            status=status.HTTP_202_ACCEPTED,
-        )
+        if employee_id== experience.employee.id:
+            experience.delete()
+            return Response(
+                {"status": "success", "message": "experience deleted successfully"},
+                status=status.HTTP_202_ACCEPTED,
+            )
+        else: 
+            return Response({"status":"failed","message":"unauthorized"},status=status.HTTP_403_FORBIDDEN)
     except Experience.DoesNotExist:
         return Response(
             {"status": "failed", "message": "experience not found"},
