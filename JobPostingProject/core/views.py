@@ -1,17 +1,15 @@
+from datetime import datetime
+
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    parser_classes,
-    permission_classes,
-)
+from rest_framework.decorators import (api_view, authentication_classes,
+                                       parser_classes, permission_classes)
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from datetime import datetime
+
 from .serializers import *
 
 # Create your views here.
@@ -423,12 +421,15 @@ def remove_skills(request, id):
 def add_experience(request):
     data = request.data.copy()
     try:
-        user_id=request.user.id
+        user_id = request.user.id
         try:
-            employee=EmployeeProfile.objects.get(user=user_id)
+            employee = EmployeeProfile.objects.get(user=user_id)
         except EmployeeProfile.DoesNotExist:
-            return Response({"status":"failed","message":"no employee found"},status=status.HTTP_400_BAD_REQUEST)
-        data["employee"]=employee.id
+            return Response(
+                {"status": "failed", "message": "no employee found"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        data["employee"] = employee.id
         start_date = datetime.strptime(data["start_date"], "%Y-%m-%d").date()
         end_date = datetime.strptime(data["end_date"], "%Y-%m-%d").date()
     except ValueError:
@@ -462,41 +463,78 @@ def add_experience(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def get_experiences(request):
-    
-    user_id=request.user.id
+
+    user_id = request.user.id
     try:
-        employee= EmployeeProfile.objects.get(user=user_id)
+        employee = EmployeeProfile.objects.get(user=user_id)
     except EmployeeProfile.DoesNotExist:
-        return Response({"status":"failed","message":"employee not found",},status=status.HTTP_400_BAD_REQUEST,)
-    experiences=Experience.objects.filter(employee=employee,many=True)
-    serializer=ExperienceSerializer(experiences)
-    return Response({"status":"success","message":"experiences found","data":serializer.data,},status=status.HTTP_200_OK,)
+        return Response(
+            {
+                "status": "failed",
+                "message": "employee not found",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    experiences = Experience.objects.filter(employee=employee, many=True)
+    serializer = ExperienceSerializer(experiences)
+    return Response(
+        {
+            "status": "success",
+            "message": "experiences found",
+            "data": serializer.data,
+        },
+        status=status.HTTP_200_OK,
+    )
+
 
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def get_experiences_for_employee(request,id):
+def get_experiences_for_employee(request, id):
     try:
-        employee=EmployeeProfile.objects.get(id=id)
+        employee = EmployeeProfile.objects.get(id=id)
     except EmployeeProfile.DoesNotExist:
-        return Response({"Status":"failed","message":"employee not found"},status=status.HTTP_400_BAD_REQUEST)
-    experiences=Experience.objects.filter(employee=employee)
+        return Response(
+            {"Status": "failed", "message": "employee not found"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    experiences = Experience.objects.filter(employee=employee)
     if Experience.objects.filter(employee=employee).values().exists():
-        serializer=ExperienceSerializer(experiences,many=True)
-        return Response({"status":"success","message":"experiences fetched",},status=status.HTTP_200_OK,)
+        serializer = ExperienceSerializer(experiences, many=True)
+        return Response(
+            {
+                "status": "success",
+                "message": "experiences fetched",
+            },
+            status=status.HTTP_200_OK,
+        )
     else:
-        return Response({"status":"success","message":"no experience found",},status=status.HTTP_200_OK,)
+        return Response(
+            {
+                "status": "success",
+                "message": "no experience found",
+            },
+            status=status.HTTP_200_OK,
+        )
+
 
 @api_view(["DELETE"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def remove_experience(request,id):
+def remove_experience(request, id):
     try:
-        experience=Experience.objects.get(id=id)
+        experience = Experience.objects.get(id=id)
         experience.delete()
-        return Response({"status":"success","message":"experience deleted successfully"},status=status.HTTP_202_ACCEPTED)
+        return Response(
+            {"status": "success", "message": "experience deleted successfully"},
+            status=status.HTTP_202_ACCEPTED,
+        )
     except Experience.DoesNotExist:
-        return Response({"status":"failed","message":"experience not found"},status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"status": "failed", "message": "experience not found"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
 
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
