@@ -157,7 +157,7 @@ class ExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experience
         fields = "__all__"
-        read_only_fields = ["start_date", "end_date"]
+        read_only_fields = ["employee"]
 
     def validate(self, data):
         company = data.get("company", "")
@@ -173,3 +173,10 @@ class ExperienceSerializer(serializers.ModelSerializer):
                 "start date cannot be greater than end date"
             )
         return data
+
+
+""" class UpdateExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Experience
+        fields="__all__"
+        read_only_fields=['employee'] """

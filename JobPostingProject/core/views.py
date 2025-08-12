@@ -479,8 +479,8 @@ def get_experiences(request):
             },
             status=status.HTTP_400_BAD_REQUEST,
         )
-    experiences = Experience.objects.filter(employee=employee, many=True)
-    serializer = ExperienceSerializer(experiences)
+    experiences = Experience.objects.filter(employee=employee)
+    serializer = ExperienceSerializer(experiences,many=True)
     return Response(
         {
             "status": "success",
@@ -494,9 +494,9 @@ def get_experiences(request):
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def get_experiences_for_employee(request, id):
+def get_experiences_of_employee(request, employee_id):
     try:
-        employee = EmployeeProfile.objects.get(id=id)
+        employee = EmployeeProfile.objects.get(id=employee_id)
     except EmployeeProfile.DoesNotExist:
         return Response(
             {"Status": "failed", "message": "employee not found"},
@@ -526,7 +526,7 @@ def get_experiences_for_employee(request, id):
 @api_view(["DELETE"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def remove_experience(request, id):
+def remove_experience(request, experience_id):
     user_id=request.user.id
     try:    
         employee=EmployeeProfile.objects.get(user=user_id)
@@ -535,7 +535,7 @@ def remove_experience(request, id):
     employee_id=employee.id 
    
     try:
-        experience = Experience.objects.get(id=id)
+        experience = Experience.objects.get(id=experience_id)
         if employee_id== experience.employee.id:
             experience.delete()
             return Response(
@@ -551,12 +551,20 @@ def remove_experience(request, id):
         )
 
 
-@api_view(["POST"])
+@api_view(["PATCH"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def edit_experience(request, experience_id):
-    pass
-
+    try:
+        experience=Experience.objects.get(id=experience_id)
+    except Experience.DoesNotExist:
+        return Response({"status":"failed","message":"experience not found",},status=status.HTTP_400_BAD_REQUEST,)
+    seriazlizer=ExperienceSerializer(experience,data=request.data,partial=True)
+    if seriazlizer.is_valid():
+        seriazlizer.save()
+        return Response({"status":"success","message":"updated experience successfully"},status=status.HTTP_201_CREATED)
+    else:
+        return Response({"status":"failed","message":"invalid data","errors":seriazlizer.errors,},status=status.HTTP_400_BAD_REQUEST)
 
 # -------------------------------Job----------------------------------------->>>
 

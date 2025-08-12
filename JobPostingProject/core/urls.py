@@ -59,6 +59,32 @@ urlpatterns = [
         remove_skills,
         name="remove-skills",
     ),
+    # EXPERIENCE-->
+    path(
+        "add-experience/",
+        add_experience,
+        name="add-experience",
+    ),
+    path(
+        "get-experiences/",
+        get_experiences,
+        name="get-experiences",
+    ),
+    path(
+        "get-experience-of-employee/<int:employee_id>/",
+        get_experiences_of_employee,
+        name="get-experience-of-empoyee",
+    ),
+    path(
+        "remomve-experience/<int:experience_id>/",
+        remove_experience,
+        name="remove-experience",
+    ),
+    path(
+        "edit-experience/<experience_id>",
+        edit_experience,
+        name="edit-experience",
+    ),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
