@@ -4,8 +4,12 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (api_view, authentication_classes,
-                                       parser_classes, permission_classes)
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    parser_classes,
+    permission_classes,
+)
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -505,6 +509,7 @@ def get_experiences_for_employee(request, id):
             {
                 "status": "success",
                 "message": "experiences fetched",
+                "data": serializer.data,
             },
             status=status.HTTP_200_OK,
         )
