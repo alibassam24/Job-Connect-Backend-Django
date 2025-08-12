@@ -480,7 +480,7 @@ def get_experiences(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
     experiences = Experience.objects.filter(employee=employee)
-    serializer = ExperienceSerializer(experiences,many=True)
+    serializer = ExperienceSerializer(experiences, many=True)
     return Response(
         {
             "status": "success",
@@ -527,23 +527,29 @@ def get_experiences_of_employee(request, employee_id):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def remove_experience(request, experience_id):
-    user_id=request.user.id
-    try:    
-        employee=EmployeeProfile.objects.get(user=user_id)
+    user_id = request.user.id
+    try:
+        employee = EmployeeProfile.objects.get(user=user_id)
     except:
-        return Response({"status":"failed","message":"employee not found against user id"},status=status.HTTP_400_BAD_REQUEST)
-    employee_id=employee.id 
-   
+        return Response(
+            {"status": "failed", "message": "employee not found against user id"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    employee_id = employee.id
+
     try:
         experience = Experience.objects.get(id=experience_id)
-        if employee_id== experience.employee.id:
+        if employee_id == experience.employee.id:
             experience.delete()
             return Response(
                 {"status": "success", "message": "experience deleted successfully"},
                 status=status.HTTP_202_ACCEPTED,
             )
-        else: 
-            return Response({"status":"failed","message":"unauthorized"},status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response(
+                {"status": "failed", "message": "unauthorized"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
     except Experience.DoesNotExist:
         return Response(
             {"status": "failed", "message": "experience not found"},
@@ -556,15 +562,32 @@ def remove_experience(request, experience_id):
 @permission_classes([IsAuthenticated])
 def edit_experience(request, experience_id):
     try:
-        experience=Experience.objects.get(id=experience_id)
+        experience = Experience.objects.get(id=experience_id)
     except Experience.DoesNotExist:
-        return Response({"status":"failed","message":"experience not found",},status=status.HTTP_400_BAD_REQUEST,)
-    seriazlizer=ExperienceSerializer(experience,data=request.data,partial=True)
+        return Response(
+            {
+                "status": "failed",
+                "message": "experience not found",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    seriazlizer = ExperienceSerializer(experience, data=request.data, partial=True)
     if seriazlizer.is_valid():
         seriazlizer.save()
-        return Response({"status":"success","message":"updated experience successfully"},status=status.HTTP_201_CREATED)
+        return Response(
+            {"status": "success", "message": "updated experience successfully"},
+            status=status.HTTP_201_CREATED,
+        )
     else:
-        return Response({"status":"failed","message":"invalid data","errors":seriazlizer.errors,},status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {
+                "status": "failed",
+                "message": "invalid data",
+                "errors": seriazlizer.errors,
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
 
 # -------------------------------Job----------------------------------------->>>
 
@@ -573,12 +596,42 @@ def edit_experience(request, experience_id):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def post_job(request):
-    pass
+    data = request.data.copy()
+    user_id = request.user.id
+    try:
+        employer = EmployerProfile.objects.get(user=user_id)
+    except EmployeeProfile.DoesNotExist:
+        return Response(
+            {
+                "status": "failed",
+                "message": "Employer not found",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    data["employer"] = employer.id
+    serializer = JobSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {"status": "success", "message": "job created", "data": serializer.data},
+            status=status.HTTP_201_CREATED,
+        )
+    else:
+        return Response(
+            {
+                "status": "failed",
+                "message": "invalid data",
+                "errors": serializer.errors,
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
 
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def search_jobs(request):
+    # use pagination
     pass
 
 
@@ -592,7 +645,7 @@ def view_job(request):
 @api_view(["DELETE"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def delete_job(request):
+def delete_job(request, job_id):
     pass
 
 
@@ -626,5 +679,5 @@ def view_application(request):
 @api_view(["DELETE"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def delete_application():
+def delete_application(request, application_id):
     pass

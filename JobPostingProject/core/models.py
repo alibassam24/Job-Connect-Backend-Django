@@ -46,7 +46,7 @@ class Skills(models.Model):
 class Experience(models.Model):
     company = models.CharField(max_length=50)
     job_title = models.CharField(max_length=20, null=True, blank=True)
-    duration= models.CharField(max_length=20, blank=True, null=True)
+    duration = models.CharField(max_length=20, blank=True, null=True)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     responsibilities = models.CharField(
@@ -79,7 +79,7 @@ class Job(models.Model):
     WORKPLACE_CHOICES = [
         ("Remote", "Remote"),
         ("Onsite", "Onsite"),
-        ("Hybird", "Hybrid"),
+        ("Hybrid", "Hybrid"),
     ]
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=2000)
@@ -93,7 +93,10 @@ class Job(models.Model):
         max_length=8, choices=WORKPLACE_CHOICES, default="onsite"
     )
     number_of_positions = models.IntegerField(blank=True, null=True)
-    employer=models.ForeignKey(EmployerProfile,on_delete=models.CASCADE,null=True,blank=True)
+    employer = models.ForeignKey(
+        EmployerProfile, on_delete=models.CASCADE, null=True, blank=True
+    )
+
     def __str__(self):
         return f"{self.title}"
 

@@ -85,6 +85,38 @@ urlpatterns = [
         edit_experience,
         name="edit-experience",
     ),
+    # JOB-->
+    path(
+        "post-job/",
+        post_job,
+        name="post-job",
+    ),
+    path(
+        "search-jobs/",
+        search_jobs,
+        name="search-jobs",
+    ),
+    path(
+        "view-job/",
+        view_job,
+        name="view-job",
+    ),
+    path(
+        "delete-job/<int:job_id>/",
+        delete_job,
+        name="delete-job",
+    ),
+    # APPLICATION-->
+    path(
+        "send-application/",
+        send_application,
+        name="send-application",
+    ),
+    path(
+        "delete-application/<int:application_id>/",
+        delete_application,
+        name="delete-application",
+    ),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
