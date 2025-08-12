@@ -575,14 +575,6 @@ def edit_experience(request, experience_id):
 def post_job(request):
     pass
 
-
-@api_view(["PATCH"])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def edit_job(request):
-    pass
-
-
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
