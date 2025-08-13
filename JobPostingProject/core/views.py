@@ -780,8 +780,30 @@ def view_all_applications_on_job(request):
 # filter applications
 
 
+# employee can delete his own application only
 @api_view(["DELETE"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def delete_application(request, application_id):
-    pass
+
+    application = get_object_or_404(Application, id=application_id)
+    employee_in_application = application.employee
+    # employee_in_application = get_object_or_404(EmployeeProfile, id=application.employee)
+    employee_in_request = get_object_or_404(EmployeeProfile, user=request.user)
+    if employee_in_request == employee_in_application:
+        application.delete()
+        return Response(
+            {
+                "status": "success",
+                "message": "application deleted",
+            },
+            status=status.HTTP_200_OK,
+        )
+    else:
+        return Response(
+            {
+                "status": "failed",
+                "message": "employee can delete his own application only",
+            },
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
