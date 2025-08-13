@@ -1,15 +1,11 @@
 from datetime import datetime
 
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    parser_classes,
-    permission_classes,
-)
+from rest_framework.decorators import (api_view, authentication_classes,
+                                       parser_classes, permission_classes)
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -635,18 +631,75 @@ def search_jobs(request):
     pass
 
 
+# anyone can view job
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def view_job(request):
-    pass
+def view_job(request, job_id):
+    try:
+        job = Job.objects.get(id=job_id)
+    except Job.DoesNotExist:
+        return Response(
+            {
+                "status": "failed",
+                "message": "job not found",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    serializer = JobSerializer(job)
+    return Response(
+        {
+            "status": "success",
+            "message": "job fetched successfully",
+            "data": serializer.data,
+        },
+        status=status.HTTP_200_OK,
+    )
 
 
 @api_view(["DELETE"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def delete_job(request, job_id):
-    pass
+    user_id = request.user.id
+    try:
+        employer = EmployerProfile.objects.get(user=user_id)
+    except EmployerProfile.DoesNotExist:
+        return Response(
+            {
+                "status": "failed",
+                "message": "employer of job not found",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    try:
+        job = Job.objects.get(id=job_id)
+    except Job.DoesNotExist:
+        return Response(
+            {
+                "status": "failed",
+                "message": "job not found",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    if employer.id == job.employer.id:
+        job.delete()
+        return Response(
+            {
+                "status": "success",
+                "message": "job deleted",
+            },
+            status=status.HTTP_200_OK,
+        )
+    else:
+        return Response(
+            {
+                "status": "failed",
+                "message": "permission denied",
+            },
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
 
 ##filter jobs based on diff fields
@@ -654,12 +707,25 @@ def delete_job(request, job_id):
 
 # -------------------------------Application----------------------------------------->>>>
 
-
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def send_application(request):
-    pass
+def send_application(request,job_id):
+    user_id = request.user.id
+    employee = get_object_or_404(EmployeeProfile, user=user_id)
+    job=get_object_or_404(Job,id=job_id)
+    
+    # data=request.data.copy()
+    # data["employer"]=job.employer.id
+    # data["job"]=job.id
+    # data["employee"]=employee.id
+    #BEST-PRACTICE->
+    serializer=ApplicationSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save(job=job,employee=employee,employer=job.employer)
+        return Response({"status":"success","message":"Job Application sent","data":serializer.data,},status=status.HTTP_200_OK)
+    else:
+        return Response({"status":"failed","message":"invalid data","errors":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["PATCH"])

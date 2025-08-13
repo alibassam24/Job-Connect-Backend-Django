@@ -97,7 +97,7 @@ urlpatterns = [
         name="search-jobs",
     ),
     path(
-        "view-job/",
+        "view-job/<int:job_id>",
         view_job,
         name="view-job",
     ),
@@ -108,7 +108,7 @@ urlpatterns = [
     ),
     # APPLICATION-->
     path(
-        "send-application/",
+        "send-application/<int:job_id>",
         send_application,
         name="send-application",
     ),
