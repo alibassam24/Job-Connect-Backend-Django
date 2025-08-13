@@ -113,6 +113,11 @@ urlpatterns = [
         name="send-application",
     ),
     path(
+        "edit-application/<int:application_id>/",
+        edit_application,
+        name="edit-application",
+    ),
+    path(
         "delete-application/<int:application_id>/",
         delete_application,
         name="delete-application",

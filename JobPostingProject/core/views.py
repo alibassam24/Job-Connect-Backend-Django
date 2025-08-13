@@ -707,39 +707,77 @@ def delete_job(request, job_id):
 
 # -------------------------------Application----------------------------------------->>>>
 
+
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def send_application(request,job_id):
+def send_application(request, job_id):
     user_id = request.user.id
     employee = get_object_or_404(EmployeeProfile, user=user_id)
-    job=get_object_or_404(Job,id=job_id)
-    
+    job = get_object_or_404(Job, id=job_id)
+
     # data=request.data.copy()
     # data["employer"]=job.employer.id
     # data["job"]=job.id
     # data["employee"]=employee.id
-    #BEST-PRACTICE->
-    serializer=ApplicationSerializer(data=request.data)
+    # BEST-PRACTICE->
+    serializer = ApplicationSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save(job=job,employee=employee,employer=job.employer)
-        return Response({"status":"success","message":"Job Application sent","data":serializer.data,},status=status.HTTP_200_OK)
+        serializer.save(job=job, employee=employee, employer=job.employer)
+        return Response(
+            {
+                "status": "success",
+                "message": "Job Application sent",
+                "data": serializer.data,
+            },
+            status=status.HTTP_200_OK,
+        )
     else:
-        return Response({"status":"failed","message":"invalid data","errors":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {
+                "status": "failed",
+                "message": "invalid data",
+                "errors": serializer.errors,
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 @api_view(["PATCH"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def edit_application(request):
-    pass
+def edit_application(request, application_id):
+    application = get_object_or_404(Application, id=application_id)
+    serializer = ApplicationSerializer(application, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {
+                "status": "success",
+                "message": "application updated successfully",
+                "data": serializer.data,
+            },
+            status=status.HTTP_202_ACCEPTED,
+        )
+    else:
+        return Response(
+            {
+                "status": "failed",
+                "message": "invalid data",
+                "errors": serializer.errors,
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def view_application(request):
+def view_all_applications_on_job(request):
     pass
+
+
+# filter applications
 
 
 @api_view(["DELETE"])
