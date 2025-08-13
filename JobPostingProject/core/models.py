@@ -103,8 +103,8 @@ class Job(models.Model):
 
 class Application(models.Model):
     employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
-    employer = models.OneToOneField(EmployerProfile, on_delete=models.CASCADE)
-    job = models.OneToOneField(Job, on_delete=models.CASCADE)
+    employer = models.ForeignKey(EmployerProfile, on_delete=models.CASCADE)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
     cover_letter = models.CharField(max_length=200, blank=True, null=True)
     cv = models.FileField()
     email = models.EmailField()

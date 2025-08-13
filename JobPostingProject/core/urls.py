@@ -8,7 +8,7 @@ from .views import *
 urlpatterns = [
     # USER-->
     path("register-user/", register_user, name="register-user"),
-    path("login-user/", login_user, name="login-user/"),
+    path("login-user/", login_user, name="login-user"),
     path("delete-user/<int:id>/", delete_user, name="delete-user"),
     path("logout-user/", logout_user, name="logout-user"),
     path("update-user/<int:id>/", update_user, name="update-user"),
@@ -31,17 +31,17 @@ urlpatterns = [
     path(
         "create-employer-profile/",
         create_employer_profile,
-        name="create-employee-profile",
+        name="create-employer-profile",
     ),
     path(
         "edit-employer-profile/<int:id>/",
         edit_employer_profile,
-        name="edit-employee-profile",
+        name="edit-employer-profile",
     ),
     path(
         "view-employer-profile/<int:id>/",
         view_employer_profile,
-        name="view-employee-profile",
+        name="view-employer-profile",
     ),
     # SKILLS-->
     path(
@@ -50,12 +50,12 @@ urlpatterns = [
         name="add-skills",
     ),
     path(
-        "view-skills-by-user-id/<int:id>",
+        "view-skills-by-user-id/<int:id>/",
         view_skills_by_user_id,
         name="view-skills-by-user-id",
     ),
     path(
-        "remove-skills/<int:id>",
+        "remove-skills/<int:id>/",
         remove_skills,
         name="remove-skills",
     ),
@@ -76,12 +76,12 @@ urlpatterns = [
         name="get-experience-of-empoyee",
     ),
     path(
-        "remomve-experience/<int:experience_id>/",
+        "remove-experience/<int:experience_id>/",
         remove_experience,
         name="remove-experience",
     ),
     path(
-        "edit-experience/<experience_id>",
+        "edit-experience/<experience_id>/",
         edit_experience,
         name="edit-experience",
     ),
@@ -97,7 +97,7 @@ urlpatterns = [
         name="search-jobs",
     ),
     path(
-        "view-job/<int:job_id>",
+        "view-job/<int:job_id>/",
         view_job,
         name="view-job",
     ),
@@ -108,7 +108,7 @@ urlpatterns = [
     ),
     # APPLICATION-->
     path(
-        "send-application/<int:job_id>",
+        "send-application/<int:job_id>/",
         send_application,
         name="send-application",
     ),
@@ -118,7 +118,7 @@ urlpatterns = [
         name="edit-application",
     ),
     path(
-        "view-all-application/<int:job_id>",
+        "view-all-application/<int:job_id>/",
         view_all_applications_on_job,
         name="view-all-applications",
     ),
