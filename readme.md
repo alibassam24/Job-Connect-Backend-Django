@@ -118,4 +118,4 @@ python manage.py runserver
 ## 🙋‍♂️ Author
 Ali Bassam
 📧 alibassam063@gmail.com
-🔗 https:www.linkedin.com/in/alibassam1
+🔗 https://www.linkedin.com/in/alibassam1
