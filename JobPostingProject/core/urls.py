@@ -118,6 +118,11 @@ urlpatterns = [
         name="edit-application",
     ),
     path(
+        "view-all-application/<int:job_id>",
+        view_all_applications_on_job,
+        name="view-all-applications",
+    ),
+    path(
         "delete-application/<int:application_id>/",
         delete_application,
         name="delete-application",

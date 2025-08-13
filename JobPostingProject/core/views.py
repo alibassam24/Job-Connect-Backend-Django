@@ -1,11 +1,15 @@
 from datetime import datetime
 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (api_view, authentication_classes,
-                                       parser_classes, permission_classes)
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    parser_classes,
+    permission_classes,
+)
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -773,8 +777,38 @@ def edit_application(request, application_id):
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def view_all_applications_on_job(request):
-    pass
+def view_all_applications_on_job(request, job_id):
+
+    job = get_object_or_404(Job, id=job_id)
+    applications = Application.objects.filter(job=job)
+    if request.user == job.employer.user:
+        if applications.exists():
+            serializer = ApplicationSerializer(applications, many=True)
+            return Response(
+                {
+                    "status": "success",
+                    "message": "applications fetched successfully",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {
+                    "status": "success",
+                    "message": "no application found",
+                    "data": [],  # empty list
+                },
+                status=status.HTTP_200_OK,
+            )
+    else:
+        return Response(
+            {
+                "status": "failed",
+                "message": "unauthorized",
+            },
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
 
 # filter applications
