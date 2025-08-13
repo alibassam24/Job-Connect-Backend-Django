@@ -25,9 +25,11 @@ A Django REST Framework backend for managing job postings, employee/employer pro
 
 ### Job Management
 - Post new jobs
-- Search jobs
+- Search jobs & search by title
 - View job details
 - Delete jobs
+- API responses use **PageNumberPagination** (5 items per page) for job listings
+
 
 ### Application Management
 - Employees can apply to jobs with a cover letter and CV
@@ -40,10 +42,9 @@ A Django REST Framework backend for managing job postings, employee/employer pro
 - **Python 3.10+**
 - **Django 4.x**
 - **Django REST Framework**
-- **Backend:**
 - **SQLite**
 - **Token Authentication:** 
-
+- **PageNumberPagination**
 ---
 
 ## Setup Instructions
@@ -101,7 +102,7 @@ python manage.py runserver
 | GET | `/view-employer-profile/<id>/` | View employer profile by ID |
 | PATCH | `/edit-employer-profile/<id>/` | Edit employer profile by ID |
 | POST | `/post-job/` | Post a new job |
-| GET | `/search-jobs/` | Search jobs |
+| GET | `/search-jobs/<title>` | Search jobs |
 | GET | `/view-job/<job_id>/` | View job details by job ID |
 | DELETE | `/delete-job/<job_id>/` | Delete job by job ID |
 
