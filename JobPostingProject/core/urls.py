@@ -92,8 +92,8 @@ urlpatterns = [
         name="post-job",
     ),
     path(
-        "search-jobs/",
-        search_jobs,
+        "search-jobs-by-title/<string:title>/",
+        search_jobs_by_title,
         name="search-jobs",
     ),
     path(

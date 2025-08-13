@@ -34,6 +34,9 @@ class EmployeeProfile(models.Model):
     phone_number = models.CharField(max_length=11)
     introduction = models.CharField(max_length=1000, blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
 
 class Skills(models.Model):
     name = models.CharField(max_length=15)
@@ -55,7 +58,7 @@ class Experience(models.Model):
     employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.job_title}"
+        return f"{self.job_title + self.employee.city}"
 
 
 class EmployerProfile(models.Model):
@@ -65,6 +68,9 @@ class EmployerProfile(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     city = models.CharField(max_length=20, blank=True)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
 class Job(models.Model):
@@ -111,5 +117,8 @@ class Application(models.Model):
     city = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    def __str__(self):
+        return f"{self.employee.user.first_name} {self.employee.user.last_name} applied to {self.job.title}"
 
     # using super key--research

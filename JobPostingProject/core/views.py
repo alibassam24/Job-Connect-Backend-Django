@@ -1,22 +1,17 @@
 from datetime import datetime
 
-from django.shortcuts import get_object_or_404, get_list_or_404
+from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    parser_classes,
-    permission_classes,
-)
+from rest_framework.decorators import (api_view, authentication_classes,
+                                       parser_classes, permission_classes)
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .serializers import *
-
-# Create your views here.
 
 # -------------------------------USER----------------------------------------->>>>
 
@@ -627,12 +622,37 @@ def post_job(request):
         )
 
 
+##filter jobs based on diff fields
+##add pagination
+
+
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def search_jobs(request):
+def search_jobs_by_title(request, title):
     # use pagination
-    pass
+    jobs = Job.objects.filter(title__icontains=title)
+    if jobs.exists():
+        paginator = PageNumberPagination()
+        paginator.page_size = 5
+        paginated_jobs = paginator.paginate_queryset(jobs, request)
+        serializer = JobSerializer(paginated_jobs, many=True)
+        return paginator.get_paginated_response(
+            {
+                "status": "success",
+                "message": "jobs fetched successfully",
+                "data": serializer.data,
+            }
+        )
+    else:
+        return Response(
+            {
+                "status": "success",
+                "message": "no jobs found",
+                "data": [],
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 # anyone can view job
@@ -773,14 +793,15 @@ def edit_application(request, application_id):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-#oldest first - prioritizing early appliers
+
+# oldest first - prioritizing early appliers
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def view_all_applications_on_job(request, job_id):
 
     job = get_object_or_404(Job, id=job_id)
-    applications = Application.objects.filter(job=job).order_by('created_at')
+    applications = Application.objects.filter(job=job).order_by("created_at")
     if request.user == job.employer.user:
         if applications.exists():
             serializer = ApplicationSerializer(applications, many=True)
@@ -811,7 +832,42 @@ def view_all_applications_on_job(request, job_id):
         )
 
 
-# filter applications
+# get latest first
+@api_view(["GET"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def view_latest_applications_on_job(request, job_id):
+
+    job = get_object_or_404(Job, id=job_id)
+    applications = Application.objects.filter(job=job).order_by("-created_at")
+    if request.user == job.employer.user:
+        if applications.exists():
+            serializer = ApplicationSerializer(applications, many=True)
+            return Response(
+                {
+                    "status": "success",
+                    "message": "applications fetched successfully",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {
+                    "status": "success",
+                    "message": "no application found",
+                    "data": [],  # empty list
+                },
+                status=status.HTTP_200_OK,
+            )
+    else:
+        return Response(
+            {
+                "status": "failed",
+                "message": "unauthorized",
+            },
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
 
 # employee can delete his own application only
