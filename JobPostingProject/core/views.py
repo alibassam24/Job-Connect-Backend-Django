@@ -773,14 +773,14 @@ def edit_application(request, application_id):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-
+#oldest first - prioritizing early appliers
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def view_all_applications_on_job(request, job_id):
 
     job = get_object_or_404(Job, id=job_id)
-    applications = Application.objects.filter(job=job)
+    applications = Application.objects.filter(job=job).order_by('created_at')
     if request.user == job.employer.user:
         if applications.exists():
             serializer = ApplicationSerializer(applications, many=True)
