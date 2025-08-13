@@ -37,52 +37,85 @@ A Django REST Framework backend for managing job postings, employee/employer pro
 ---
 
 ## Tech Stack
-- **Backend:** Django, Django REST Framework
-- **Database:** SQLite (default, can switch to PostgreSQL/MySQL)
-- **Authentication:** Token-based authentication (DRF `TokenAuthentication`)
-- **Media Handling:** Django `FileField` / `ImageField` with `MEDIA_URL` and `MEDIA_ROOT`
+- **Python 3.10+**
+- **Django 4.x**
+- **Django REST Framework**
+- **Backend:**
+- **SQLite**
+- **Token Authentication:** 
 
 ---
 
-## Getting Started
+## Setup Instructions
 
-### 1. Create a virtual environment & install dependencies
+
 ``` bash
-Edit
+# Clone the repo
+
+# Create virtual environment
 python -m venv env
 source env/bin/activate   # Windows: env\Scripts\activate
-pip install -r requirements.txt
-```
-### 2. Run migrations
-```bash
 
+# Install dependencies
+pip install -r requirements.txt
+
+# Run migrations
 python manage.py makemigrations
 python manage.py migrate
-```
-### 3. Create a superuser
-```bash
+
+#Create Superuser
 python manage.py createsuperuser
-```
-### 4. Run the development server
-```
+
+# Start development server
 python manage.py runserver
 ```
-## API Endpoints Overview
-Method	Endpoint	Description
-POST	/register-user/	Register a new user
-POST	/login-user/	Login user
-POST	/logout-user/	Logout user
-PATCH	/update-user/<id>/	Update user
-DELETE	/delete-user/<id>/	Delete user
-POST	/create-employee-profile/	Create employee profile
-GET	/view-employee-profile/<id>/	View employee profile
-POST	/add-skills/	Add skills to profile
-DELETE	/remove-skills/<id>/	Remove a skill
-POST	/post-job/	Post a job
-GET	/search-jobs/	Search jobs
-GET	/view-job/<job_id>/	View job details
-DELETE	/delete-job/<job_id>/	Delete job
-POST	/send-application/<job_id>/	Send job application
-PATCH	/edit-application/<application_id>/	Edit an application
-GET	/view-all-application/<job_id>/	View all applications for a job
-DELETE	/delete-application/<application_id>/
+## API Endpoints Overview 🗂
+
+### 👤 User Endpoints
+| Method | Endpoint | Description |
+|--------|---------|------------|
+| POST | `/register-user/` | Register a new user |
+| POST | `/login-user/` | Login user |
+| POST | `/logout-user/` | Logout user |
+| PATCH | `/update-user/<id>/` | Update user by ID |
+| DELETE | `/delete-user/<id>/` | Delete user by ID |
+
+### 🧑‍💼 Employee Endpoints
+| Method | Endpoint | Description |
+|--------|---------|------------|
+| POST | `/create-employee-profile/` | Create employee profile |
+| GET | `/view-employee-profile/<id>/` | View employee profile by ID |
+| PATCH | `/edit-employee-profile/<id>/` | Edit employee profile by ID |
+| POST | `/add-skills/` | Add skills to profile |
+| DELETE | `/remove-skills/<id>/` | Remove a skill by ID |
+| POST | `/add-experience/` | Add work experience |
+| GET | `/get-experiences/` | Get all experiences |
+| GET | `/get-experience-of-employee/<employee_id>/` | Get experiences of a specific employee |
+| PATCH | `/edit-experience/<experience_id>/` | Edit experience by ID |
+| DELETE | `/remove-experience/<experience_id>/` | Remove experience by ID |
+
+### 🏢 Employer Endpoints
+| Method | Endpoint | Description |
+|--------|---------|------------|
+| POST | `/create-employer-profile/` | Create employer profile |
+| GET | `/view-employer-profile/<id>/` | View employer profile by ID |
+| PATCH | `/edit-employer-profile/<id>/` | Edit employer profile by ID |
+| POST | `/post-job/` | Post a new job |
+| GET | `/search-jobs/` | Search jobs |
+| GET | `/view-job/<job_id>/` | View job details by job ID |
+| DELETE | `/delete-job/<job_id>/` | Delete job by job ID |
+
+### 📝 Application Endpoints
+| Method | Endpoint | Description |
+|--------|---------|------------|
+| POST | `/send-application/<job_id>/` | Send job application |
+| PATCH | `/edit-application/<application_id>/` | Edit an application by ID |
+| GET | `/view-all-application/<job_id>/` | View all applications for a job |
+| DELETE | `/delete-application/<application_id>/` | Delete an application by ID |
+
+
+
+## 🙋‍♂️ Author
+Ali Bassam
+📧 alibassam063@gmail.com
+🔗 https:www.linkedin.com/in/alibassam1
