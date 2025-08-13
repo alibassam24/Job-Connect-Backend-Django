@@ -725,12 +725,7 @@ def delete_job(request, job_id):
             status=status.HTTP_401_UNAUTHORIZED,
         )
 
-
-##filter jobs based on diff fields
-##add pagination
-
 # -------------------------------Application----------------------------------------->>>>
-
 
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
