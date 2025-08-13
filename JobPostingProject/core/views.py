@@ -4,8 +4,12 @@ from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (api_view, authentication_classes,
-                                       parser_classes, permission_classes)
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    parser_classes,
+    permission_classes,
+)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
@@ -629,29 +633,44 @@ def post_job(request):
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def search_jobs_by_title(request, title):
+def search_jobs_by_title(
+    request, title=None
+):  # None default value if not title is passed
     # use pagination
-    jobs = Job.objects.filter(title__icontains=title)
-    if jobs.exists():
-        paginator = PageNumberPagination()
-        paginator.page_size = 5
+    paginator = PageNumberPagination()
+    paginator.page_size = 5
+    if title:
+        jobs = Job.objects.filter(title__icontains=title)
+        if jobs.exists():
+
+            paginated_jobs = paginator.paginate_queryset(jobs, request)
+            serializer = JobSerializer(paginated_jobs, many=True)
+            return paginator.get_paginated_response(
+                {
+                    "status": "success",
+                    "message": "jobs fetched successfully",
+                    "data": serializer.data,
+                }
+            )
+        else:
+            return Response(
+                {
+                    "status": "success",
+                    "message": "no jobs found",
+                    "data": [],
+                },
+                status=status.HTTP_200_OK,
+            )
+    else:
+        jobs = Job.objects.all()
         paginated_jobs = paginator.paginate_queryset(jobs, request)
         serializer = JobSerializer(paginated_jobs, many=True)
         return paginator.get_paginated_response(
             {
                 "status": "success",
-                "message": "jobs fetched successfully",
+                "message": "all jobs fetched",
                 "data": serializer.data,
             }
-        )
-    else:
-        return Response(
-            {
-                "status": "success",
-                "message": "no jobs found",
-                "data": [],
-            },
-            status=status.HTTP_200_OK,
         )
 
 
@@ -725,7 +744,9 @@ def delete_job(request, job_id):
             status=status.HTTP_401_UNAUTHORIZED,
         )
 
+
 # -------------------------------Application----------------------------------------->>>>
+
 
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
