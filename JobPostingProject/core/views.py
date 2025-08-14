@@ -4,12 +4,8 @@ from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import (
-    api_view,
-    authentication_classes,
-    parser_classes,
-    permission_classes,
-)
+from rest_framework.decorators import (api_view, authentication_classes,
+                                       parser_classes, permission_classes)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
@@ -633,36 +629,22 @@ def post_job(request):
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def search_jobs_by_title(
-    request, title=None
-):  # None default value if not title is passed
+def search_jobs_by_title(request):  # None default value if not title is passed
     # use pagination
+    title = request.GET.get("title", None)
+    location = request.GET.get("location", None)
+    experience_level = request.GET.get("experience_level", None)
     paginator = PageNumberPagination()
     paginator.page_size = 5
+    jobs = Job.objects.all()
     if title:
-        jobs = Job.objects.filter(title__icontains=title)
-        if jobs.exists():
+        jobs = jobs.filter(title__icontains=title)
+    if location:
+        jobs = jobs.filter(location__icontains=location)
+    if experience_level:
+        jobs = jobs.filter(experience_level__icontains=experience_level)
 
-            paginated_jobs = paginator.paginate_queryset(jobs, request)
-            serializer = JobSerializer(paginated_jobs, many=True)
-            return paginator.get_paginated_response(
-                {
-                    "status": "success",
-                    "message": "jobs fetched successfully",
-                    "data": serializer.data,
-                }
-            )
-        else:
-            return Response(
-                {
-                    "status": "success",
-                    "message": "no jobs found",
-                    "data": [],
-                },
-                status=status.HTTP_200_OK,
-            )
-    else:
-        jobs = Job.objects.all()
+    if not title and not location and not experience_level:
         paginated_jobs = paginator.paginate_queryset(jobs, request)
         serializer = JobSerializer(paginated_jobs, many=True)
         return paginator.get_paginated_response(
@@ -672,6 +654,29 @@ def search_jobs_by_title(
                 "data": serializer.data,
             }
         )
+
+    if jobs.exists():
+        paginated_jobs = paginator.paginate_queryset(jobs, request)
+        serializer = JobSerializer(paginated_jobs, many=True)
+        return paginator.get_paginated_response(
+            {
+                "status": "success",
+                "message": "jobs fetched successfully",
+                "data": serializer.data,
+            }
+        )
+    else:
+        return Response(
+            {
+                "status": "success",
+                "message": "no jobs found",
+                "data": [],
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+# better to use query param for filtering/searching, path param identify a specific resource
 
 
 # anyone can view job

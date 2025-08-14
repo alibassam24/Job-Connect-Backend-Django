@@ -25,7 +25,7 @@ A Django REST Framework backend for managing job postings, employee/employer pro
 
 ### Job Management
 - Post new jobs
-- Search jobs & search by title
+- Search jobs & search by title,location,experience
 - View job details
 - Delete jobs
 - API responses use **PageNumberPagination** (5 items per page) for job listings
