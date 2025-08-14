@@ -105,6 +105,14 @@ def update_user(request, id):
             serializer = UpdateUserSerializer(user, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "user updated",
+                        "data": serializer.data,
+                    },
+                    status=status.HTTP_200_OK,
+                )
             else:
                 return Response(
                     {
@@ -207,9 +215,10 @@ def view_employee_profile(request, id):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def edit_employee_profile(request, id):
-    if request.user.id == id:
+    employee = EmployeeProfile.objects.get(user=request.user)
+
+    if request.user.id == employee.user.id:
         try:
-            employee = EmployeeProfile.objects.get(id=id)
             serializer = UpdateEmployeeSerializer(
                 employee, data=request.data, partial=True
             )
@@ -248,6 +257,8 @@ def edit_employee_profile(request, id):
 
 
 @api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def create_employer_profile(request):
     data = request.data.copy()
     data["user"] = request.user.id
@@ -274,6 +285,8 @@ def create_employer_profile(request):
 
 
 @api_view(["GET"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def view_employer_profile(request, id):
     if not id:
         return Response(
@@ -282,8 +295,8 @@ def view_employer_profile(request, id):
         )
     else:
         try:
-            employer = EmployerProfile.objects.get(id == id)
-            serializer = EmployeeProfileSerializer(employer)
+            employer = EmployerProfile.objects.get(id=id)
+            serializer = EmployerProfileSerializer(employer)
             # if serializer.is_valid():
             return Response(
                 {
@@ -303,6 +316,8 @@ def view_employer_profile(request, id):
 
 
 @api_view(["PATCH"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def edit_employer_profile(request, id):
     try:
         employer = EmployerProfile.objects.get(id=id)
@@ -311,7 +326,7 @@ def edit_employer_profile(request, id):
             return Response(
                 {
                     "status": "success",
-                    "message": "emploer profile updated",
+                    "message": "employer profile updated",
                     "data": serializer.data,
                 },
                 status=status.HTTP_200_OK,
@@ -334,11 +349,10 @@ def edit_employer_profile(request, id):
 @permission_classes([IsAuthenticated])
 def add_skills(request):
     data = request.data.copy()
-    id = request.user.id
     try:
-        employee = EmployeeProfile.objects.get(user=id)
+        employee = EmployeeProfile.objects.get(user=request.user)
         # data["employee"] = employee.GET.get("id","") GET only works on request
-        data["employee"] = employee.id
+        data["employee"] = [employee.id]
         serializer = SkillsSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -372,7 +386,7 @@ def add_skills(request):
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def view_skills_by_user_id(request, id):
+def view_skills_by_employee_id(request, id):
     skills = Skills.objects.filter(employee=id)
     serializer = SkillsSerializer(skills, many=True)
     return Response(
@@ -444,6 +458,7 @@ def add_experience(request):
             {
                 "status": "success",
                 "message": "experience added successfully",
+                "data": serializer.data,
             },
             status=status.HTTP_201_CREATED,
         )
@@ -570,7 +585,11 @@ def edit_experience(request, experience_id):
     if seriazlizer.is_valid():
         seriazlizer.save()
         return Response(
-            {"status": "success", "message": "updated experience successfully"},
+            {
+                "status": "success",
+                "message": "updated experience successfully",
+                "data": seriazlizer.data,
+            },
             status=status.HTTP_201_CREATED,
         )
     else:

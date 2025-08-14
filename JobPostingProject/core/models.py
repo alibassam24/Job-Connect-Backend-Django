@@ -23,7 +23,8 @@ class User(AbstractUser):
     # updated_at =
     # created_at =
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.first_name
+        # return f"{self.first_name} {self.last_name}"
 
 
 # Best Practice to create seperate profiles for different types of users

@@ -82,10 +82,11 @@ class UpdateEmployeeSerializer(serializers.ModelSerializer):
 
 class EmployerProfileSerializer(serializers.ModelSerializer):
     class Meta:
+        model = EmployerProfile
         fields = "__all__"
 
     def validate(self, data):
-        company = data.GET.get("company", "")
+        company = data.get("company", "")
         if not company:
             raise serializers.ValidationError("company cannot be empty")
         return data
@@ -93,9 +94,9 @@ class EmployerProfileSerializer(serializers.ModelSerializer):
 
 class UpdateEmployerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EmployeeProfile
+        model = EmployerProfile
         fields = "__all__"
-        read_only_fields = ["user"]
+        read_only_fields = ["user", "password"]
 
     # validator------
 
@@ -146,10 +147,12 @@ class SkillsSerializer(serializers.ModelSerializer):
         model = Skills
         fields = "__all__"
 
+    # read_only_fields=["employee"]
     def validate(self, data):
-        name = data.GET.get("name", "")
+        name = data.get("name", "")
         if not name:
             raise serializers.ValidationError("Skill cannot be empty")
+
         return data
 
 
@@ -157,17 +160,25 @@ class ExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experience
         fields = "__all__"
-        read_only_fields = ["employee"]
 
     def validate(self, data):
         company = data.get("company", "")
         start_date = data.get("start_date", "")
         end_date = data.get("end_date", "")
-        responsibilities = data.GET.get("responsibilities", "")
+        # responsibilities = data.get("responsibilities", "")
+        if (
+            Experience.objects.filter(company=company).exists()
+            and Experience.objects.filter(start_date=start_date).exists()
+            and Experience.objects.filter(end_date=end_date).exists()
+        ):
+            raise serializers.ValidationError("experience already exists")
         if not company:
             raise serializers.ValidationError("company cannot be empty")
         if not start_date:
             raise serializers.ValidationError("start date cannot be empty")
+        if not end_date:
+            raise serializers.ValidationError("start date cannot be empty")
+
         if start_date > end_date:
             raise serializers.ValidationError(
                 "start date cannot be greater than end date"

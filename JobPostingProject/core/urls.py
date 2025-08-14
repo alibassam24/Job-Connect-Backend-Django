@@ -28,6 +28,7 @@ urlpatterns = [
         edit_employee_profile,
         name="edit-employee-profile",
     ),
+    # EMPLOYER----->
     path(
         "create-employer-profile/",
         create_employer_profile,
@@ -50,9 +51,9 @@ urlpatterns = [
         name="add-skills",
     ),
     path(
-        "view-skills-by-user-id/<int:id>/",
-        view_skills_by_user_id,
-        name="view-skills-by-user-id",
+        "view-skills-by-employee-id/<int:id>/",
+        view_skills_by_employee_id,
+        name="view-skills-by-employee-id",
     ),
     path(
         "remove-skills/<int:id>/",
@@ -81,7 +82,7 @@ urlpatterns = [
         name="remove-experience",
     ),
     path(
-        "edit-experience/<experience_id>/",
+        "edit-experience/<int:experience_id>/",
         edit_experience,
         name="edit-experience",
     ),
