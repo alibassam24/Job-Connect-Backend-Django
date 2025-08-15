@@ -70,7 +70,7 @@ python manage.py createsuperuser
 # Start development server
 python manage.py runserver
 ```
-## 📌 API Endpoints Overview
+## 📌 API Endpoints Overview ### (click to expand)
 
 <details>
 <summary>👤 <strong>User Endpoints</strong></summary>
