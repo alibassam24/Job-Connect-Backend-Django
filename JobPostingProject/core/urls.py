@@ -94,7 +94,7 @@ urlpatterns = [
     ),
     path(
         "search-jobs/",
-        search_jobs_by_title,
+        search_jobs,
         name="search-jobs",
     ),
     path(
@@ -122,6 +122,11 @@ urlpatterns = [
         "view-all-application/<int:job_id>/",
         view_all_applications_on_job,
         name="view-all-applications",
+    ),
+    path(
+        "view-latest-application/<int:job_id>/",
+        view_latest_applications_on_job,
+        name="view-latest-applications",
     ),
     path(
         "delete-application/<int:application_id>/",

@@ -103,23 +103,23 @@ class UpdateEmployerSerializer(serializers.ModelSerializer):
 
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
-        model: Job
+        model = Job
         fields = "__all__"
         read_only_fields = ["created_at"]
 
     def validate(self, data):
-        title = data.GET.get("title", "")
-        description = data.GET.get("description", "")
+        title = data.get("title", "")
+        description = data.get("description", "")
         # skills=data.GET.get("skills","")
         # location=data.GET.get("location","")
-        number = data.GET.get("number_of_positions", "")
-
+        number = data.get("number_of_positions", "")
         if not title:
             raise serializers.ValidationError("title cannot be empty")
         if not description:
             raise serializers.ValidationError("description cannot be empty")
-        if number < 0:
-            raise serializers.ValidationError("number cannot be negative")
+        if number:
+            if number < 0:  # error if number is null
+                raise serializers.ValidationError("number cannot be negative")
         return data
 
 
@@ -127,19 +127,21 @@ class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = "__all__"
-        read_only_fields = ["created_at", "updated_at"]
+        read_only_fields = ["created_at", "updated_at", "employer", "employee", "job"]
 
     def validate(self, data):
-        email = data.GET.get("email", "")
-        city = data.GET.get("city", "")
-        employee_id = data.GET.get("employee", "")
-        employer_id = data.GET.get("employer", "")
-        job_id = data.GET.get("job", "")
+        email = data.get("email", "")
+        city = data.get("city", "")
+        employee_id = data.get("employee", "")
+        employer_id = data.get("employer", "")
+        job_id = data.get("job", "")
+
         if not email:
             raise serializers.ValidationError("email not found")
         if not city:
             raise serializers.ValidationError("city", "")
         # cannot apply if application already exists
+        return data
 
 
 class SkillsSerializer(serializers.ModelSerializer):

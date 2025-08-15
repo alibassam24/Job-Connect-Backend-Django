@@ -614,7 +614,7 @@ def post_job(request):
     user_id = request.user.id
     try:
         employer = EmployerProfile.objects.get(user=user_id)
-    except EmployeeProfile.DoesNotExist:
+    except EmployerProfile.DoesNotExist:
         return Response(
             {
                 "status": "failed",
@@ -648,7 +648,7 @@ def post_job(request):
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def search_jobs_by_title(request):  # None default value if not title is passed
+def search_jobs(request):  # None default value if not title is passed
     # use pagination
     title = request.GET.get("title", None)
     location = request.GET.get("location", None)
@@ -786,6 +786,14 @@ def send_application(request, job_id):
     # data["employee"]=employee.id
     # BEST-PRACTICE->
     serializer = ApplicationSerializer(data=request.data)
+    if Application.objects.filter(employee=employee, job=job).exists():
+        return Response(
+            {
+                "status": "success",
+                "message": "you have already applied for this job",
+            },
+            status=status.HTTP_200_OK,
+        )
     if serializer.is_valid():
         serializer.save(job=job, employee=employee, employer=job.employer)
         return Response(
