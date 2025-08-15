@@ -70,49 +70,73 @@ python manage.py createsuperuser
 # Start development server
 python manage.py runserver
 ```
-## API Endpoints Overview 🗂
+## 📌 API Endpoints Overview
 
-### 👤 User Endpoints
-| Method | Endpoint | Description |
-|--------|---------|------------|
-| POST | `/register-user/` | Register a new user |
-| POST | `/login-user/` | Login user |
-| POST | `/logout-user/` | Logout user |
-| PATCH | `/update-user/<id>/` | Update user by ID |
-| DELETE | `/delete-user/<id>/` | Delete user by ID |
+<details>
+<summary>👤 <strong>User Endpoints</strong></summary>
 
-### 🧑‍💼 Employee Endpoints
 | Method | Endpoint | Description |
-|--------|---------|------------|
-| POST | `/create-employee-profile/` | Create employee profile |
-| GET | `/view-employee-profile/<id>/` | View employee profile by ID |
-| PATCH | `/edit-employee-profile/<id>/` | Edit employee profile by ID |
-| POST | `/add-skills/` | Add skills to profile |
-| DELETE | `/remove-skills/<id>/` | Remove a skill by ID |
-| POST | `/add-experience/` | Add work experience |
-| GET | `/get-experiences/` | Get all experiences |
-| GET | `/get-experience-of-employee/<employee_id>/` | Get experiences of a specific employee |
-| PATCH | `/edit-experience/<experience_id>/` | Edit experience by ID |
-| DELETE | `/remove-experience/<experience_id>/` | Remove experience by ID |
+|--------|----------|-------------|
+| **POST** | `/register-user/` | Register a new user |
+| **POST** | `/login-user/` | Login a user |
+| **POST** | `/logout-user/` | Logout the current user |
+| **PATCH** | `/update-user/<id>/` | Update a user by ID |
+| **DELETE** | `/delete-user/<id>/` | Delete a user by ID |
 
-### 🏢 Employer Endpoints
-| Method | Endpoint | Description |
-|--------|---------|------------|
-| POST | `/create-employer-profile/` | Create employer profile |
-| GET | `/view-employer-profile/<id>/` | View employer profile by ID |
-| PATCH | `/edit-employer-profile/<id>/` | Edit employer profile by ID |
-| POST | `/post-job/` | Post a new job |
-| GET | `/search-jobs/<title>` | Search jobs |
-| GET | `/view-job/<job_id>/` | View job details by job ID |
-| DELETE | `/delete-job/<job_id>/` | Delete job by job ID |
+</details>
 
-### 📝 Application Endpoints
+---
+
+<details>
+<summary>🧑‍💼 <strong>Employee Endpoints</strong></summary>
+
 | Method | Endpoint | Description |
-|--------|---------|------------|
-| POST | `/send-application/<job_id>/` | Send job application |
-| PATCH | `/edit-application/<application_id>/` | Edit an application by ID |
-| GET | `/view-all-application/<job_id>/` | View all applications for a job |
-| DELETE | `/delete-application/<application_id>/` | Delete an application by ID |
+|--------|----------|-------------|
+| **POST** | `/create-employee-profile/` | Create employee profile |
+| **GET** | `/view-employee-profile/<id>/` | View employee profile by ID |
+| **PATCH** | `/edit-employee-profile/<id>/` | Edit employee profile by ID |
+| **POST** | `/add-skills/` | Add skills to employee profile |
+| **GET** | `/view-skills-by-employee-id/<id>/` | View skills of a specific employee |
+| **DELETE** | `/remove-skills/<id>/` | Remove a skill by ID |
+| **POST** | `/add-experience/` | Add work experience |
+| **GET** | `/get-experiences/` | Get all experiences |
+| **GET** | `/get-experience-of-employee/<employee_id>/` | Get experiences of a specific employee |
+| **PATCH** | `/edit-experience/<experience_id>/` | Edit an experience by ID |
+| **DELETE** | `/remove-experience/<experience_id>/` | Remove an experience by ID |
+
+</details>
+
+---
+
+<details>
+<summary>🏢 <strong>Employer Endpoints</strong></summary>
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| **POST** | `/create-employer-profile/` | Create employer profile |
+| **GET** | `/view-employer-profile/<id>/` | View employer profile by ID |
+| **PATCH** | `/edit-employer-profile/<id>/` | Edit employer profile by ID |
+| **POST** | `/post-job/` | Post a new job |
+| **GET** | `/search-jobs/` | Search jobs |
+| **GET** | `/view-job/<job_id>/` | View job details by job ID |
+| **DELETE** | `/delete-job/<job_id>/` | Delete a job by job ID |
+
+</details>
+
+---
+
+<details>
+<summary>📝 <strong>Application Endpoints</strong></summary>
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| **POST** | `/send-application/<job_id>/` | Send job application |
+| **PATCH** | `/edit-application/<application_id>/` | Edit an application by ID |
+| **GET** | `/view-all-application/<job_id>/` | View all applications for a specific job |
+| **GET** | `/view-latest-application/<job_id>/` | View latest applications for a specific job |
+| **DELETE** | `/delete-application/<application_id>/` | Delete an application by ID |
+
+</details>
 
 
 
