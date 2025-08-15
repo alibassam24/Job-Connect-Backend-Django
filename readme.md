@@ -116,6 +116,16 @@ python manage.py runserver
 | **POST** | `/create-employer-profile/` | Create employer profile |
 | **GET** | `/view-employer-profile/<id>/` | View employer profile by ID |
 | **PATCH** | `/edit-employer-profile/<id>/` | Edit employer profile by ID |
+
+</details>
+
+---
+
+<details>
+<summary>💼 <strong>Job Endpoints</strong></summary>
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
 | **POST** | `/post-job/` | Post a new job |
 | **GET** | `/search-jobs/` | Search jobs |
 | **GET** | `/view-job/<job_id>/` | View job details by job ID |
@@ -137,7 +147,6 @@ python manage.py runserver
 | **DELETE** | `/delete-application/<application_id>/` | Delete an application by ID |
 
 </details>
-
 
 
 ## 🙋‍♂️ Author
