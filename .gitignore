@@ -31,7 +31,6 @@ ENV/
 .venv/
 
 # VS Code
-.vscode/
 #media folder
 /media/
 # macOS
@@ -65,3 +64,7 @@ nosetests.xml
 # Static/media (optional if using cloud storage)
 staticfiles/
 media/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
