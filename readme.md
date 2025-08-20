@@ -57,6 +57,19 @@ A Django REST Framework backend for managing job postings, employee/employer pro
 python -m venv env
 source env/bin/activate   # Windows: env\Scripts\activate
 
+#Write secret key
+⚙️ Environment Setup
+
+#Generate your own Django SECRET_KEY:
+
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+
+#In the project root, create a .env file:
+#Example .env:
+
+SECRET_KEY="(secret key generated)"
+
+
 # Install dependencies
 pip install -r requirements.txt
 
