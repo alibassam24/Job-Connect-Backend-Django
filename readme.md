@@ -58,15 +58,16 @@ python -m venv env
 source env/bin/activate   # Windows: env\Scripts\activate
 
 #Write secret key
-⚙️ Environment Setup
+#⚙️ Environment Setup
 
-#Generate your own Django SECRET_KEY:
+#Generate your own Django SECRET_KEY in terminal:
 
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 
 #In the project root, create a .env file:
 #Example .env:
-
+#in .env include the key generated above
+ 
 SECRET_KEY="(secret key generated)"
 
 
